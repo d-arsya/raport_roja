@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function(){
     });
     Route::get('/kelas/hapus/{id}', function($id){
         Room::where("class_code","$id")->delete();
+        ClassCourse::where("class_code","$id")->delete();
         return back();
     });
     Route::get('/pelajaran/hapus/{course}', function(Course $course){

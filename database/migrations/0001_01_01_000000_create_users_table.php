@@ -125,13 +125,13 @@ return new class extends Migration
             $table->integer("nis")->unique();
             $table->string("email")->unique();
             $table->foreignId('group_id');
-            for ($i=1; $i <= 6; $i++) { 
+            for ($i=1; $i <= 12; $i++) { 
                 $table->char('semester '.$i,13)->nullable();
             }
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
