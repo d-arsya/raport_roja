@@ -40,14 +40,13 @@ class RoomController extends Controller
     public function teacher()
     {
         if(Hash::check(env('DEFAULT_PASSWORD'),auth()->user()->password))return redirect('/password');
-        $room = Room::with(['teacher'])->where('teacher_id', auth()->user()->teacher()->first()->nip)->first();
+        $rooms = Room::with(['teacher'])->where('teacher_id', auth()->user()->teacher()->first()->nip)->get();
         // dd($room);
-        if(!$room)return redirect('/dashboard');
+        if($rooms->count()==0)return redirect('/dashboard');
                 return view('teacher.room', [
-                    "title" => $room->name,
+                    "title"=>auth()->user()->teacher()->first()->name,
                     'active' => 'kelas',
-                    "room" => $room,
-                    "students" => $room->students(),
+                    "rooms" => $rooms                    
                 ]);
     }
     

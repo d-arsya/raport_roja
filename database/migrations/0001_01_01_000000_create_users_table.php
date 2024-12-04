@@ -103,7 +103,7 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("name_arabic");
+            $table->string("name_arabic")->nullable();
             $table->char("class_code",13)->unique();
             $table->string("teacher_id");
             $table->integer("semester");
@@ -113,7 +113,7 @@ return new class extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string("name",100);
-            $table->string("name_arabic",100);
+            $table->string("name_arabic",100)->nullable();
             $table->string("nip")->unique();
             $table->string("email")->unique();
             $table->timestamps();
@@ -121,11 +121,11 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string("name",100);
-            $table->string("name_arabic",100);
+            $table->string("name_arabic",100)->nullable();
             $table->integer("nis")->unique();
             $table->string("email")->unique();
             $table->foreignId('group_id');
-            for ($i=1; $i <= 12; $i++) { 
+            for ($i=1; $i <= 6; $i++) { 
                 $table->char('semester '.$i,13)->nullable();
             }
             $table->timestamps();

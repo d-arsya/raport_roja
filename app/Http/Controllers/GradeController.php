@@ -30,16 +30,13 @@ class GradeController extends Controller
     }
     public function teacher()
     {
-        $room = Room::where('teacher_id', auth()->user()->teacher()->first()->nip)->first();
-        if (!$room) return redirect('/dashboard');
-        $courses = $room->courses;
-        $students = $room->students();
+        $rooms = Room::where('teacher_id', auth()->user()->teacher()->first()->nip)->get();
+        if (!$rooms) return redirect('/dashboard');
+        
         return view('teacher.nilai', [
             "active" => "nilai",
-            "room" => $room,
-            "title" => "Nilai " . ucwords($room->name),
-            "courses" => $courses,
-            "students" => $students,
+            "rooms" => $rooms,
+            "title" => "Nilai ",
         ]);
     }
     public function student()
@@ -184,6 +181,46 @@ class GradeController extends Controller
         }
         return back();
     }
+    public function downloadArab(Request $request)
+    {
+        $semester = $request->semester;
+        $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        $grade = Grade::where('semester', $semester)->where('student_id', $student->nis);
+        $courses = $grade->pluck('course_id');
+        $courses = ClassCourse::whereIn('id', $courses)->get();
+        $extra = ExtraCourseGrade::where('semester', $semester)->where('student_id', $student->nis);
+        $abcents = AbcentStatus::where('semester', $semester)->where('student_id', $student->nis);
+        $personalities = PersonalityGrade::where('semester', $semester)->where('student_id', $student->nis);
+        $codeAgama = $courses->where('varian','agama')->pluck('id');
+        $codeUmum = $courses->where('varian','akademik')->pluck('id');
+        // return view('pdf.arab',[
+        //     "student" => $student,
+        //     "title" => "Nilai " . ucwords($student->name) . " Semester " . ($semester % 2 == 0 ? "Genap" : "Ganjil"),
+        //     "active" => "nilai",
+        //     "semester" => $semester,
+        //     "courseUmum"=>$grade->get()->whereIn('course_id',$codeUmum),
+        //     "courses" => $courses,
+        //     "grades" => $grade->get(),
+        //     "courseAgama"=>$grade->get()->whereIn('course_id',$codeAgama),
+        //     "extras" => $extra->get(),
+        //     "abcents" => $abcents->get(),
+        //     "personalities" => $personalities->get()
+        // ]);
+        $pdf = Pdf::loadView('pdf.arab',[
+            "student" => $student,
+            "title" => "Nilai " . ucwords($student->name) . " Semester " . ($semester % 2 == 0 ? "Genap" : "Ganjil"),
+            "active" => "nilai",
+            "semester" => $semester,
+            "courseUmum"=>$grade->get()->whereIn('course_id',$codeUmum),
+            "courses" => $courses,
+            "grades" => $grade->get(),
+            "courseAgama"=>$grade->get()->whereIn('course_id',$codeAgama),
+            "extras" => $extra->get(),
+            "abcents" => $abcents->get(),
+            "personalities" => $personalities->get()
+        ]);
+        return $pdf->download("Raport $student->name Semester $semester arabic version (diunduh pada ".now().").pdf");
+    }
     public function downloadIndo(Request $request)
     {
         $semester = $request->semester;
@@ -222,6 +259,6 @@ class GradeController extends Controller
             "abcents" => $abcents->get(),
             "personalities" => $personalities->get()
         ]);
-        return $pdf->download("Raport $student->name Semester $semester diunduh pada ".now().".pdf");
+        return $pdf->download("Raport $student->name Semester $semester (diunduh pada ".now().").pdf");
     }
 }

@@ -1,5 +1,11 @@
 @extends('layouts.main')
 @section('container')
+@foreach ($rooms as $room)  
+@php
+    $courses = $room->courses;
+    $students = $room->students();
+@endphp
+
 <div class="p-4 bg-pink-600 rounded-lg">
     <h1 class="text-3xl font-bold text-white">Data Kelas</h1>
     <div class="mt-4">
@@ -45,10 +51,11 @@ Berdasarkan Mapel
 <div class="bg-pink-600 text-white rounded-t-md p-4 text-2xl text-center font-semibold mt-5">
 Berdasarkan Siswa
 </div>
-<div class="grid grid-cols-1 md:grid-cols-6">
+<div class="grid grid-cols-1 md:grid-cols-6 mb-6">
     @foreach ($students as $student)
             <a href="/nilai/kelas/{{ $room->class_code }}/siswa/{{ $student->nis }}/semester/{{ $room->semester+1 }}" class="border border-px border-pink-600 hover:bg-pink-600 text-center text-pink-600 hover:text-white font-medium text-lg">{{ ucwords($student->name) }}</a>
     @endforeach
 </div>
 @endif
+@endforeach
 @endsection

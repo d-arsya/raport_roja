@@ -10,24 +10,39 @@
         </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-6 w-full gap-3 mt-5">
+        @if ($semester>12)
+        @for ($i = 13; $i <= 14; $i++)
+            <a href="/nilai/siswa/semester/{{ $i }}"
+                class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
+                {{ $i-12 }}</a>
+        @endfor            
+        @elseif($semester>6)
+        @for ($i = 7; $i <= 12; $i++)
+            <a href="/nilai/siswa/semester/{{ $i }}"
+                class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
+                {{ $i-6 }}</a>
+        @endfor
+        @else
         @for ($i = 1; $i <= 6; $i++)
             <a href="/nilai/siswa/semester/{{ $i }}"
                 class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
                 {{ $i }}</a>
         @endfor
+            
+        @endif
     </div>
     @if ($grades->count()>0)
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-12">
+    <div class="flex gap-3 mt-12">
         <form action="{{ route('print-indo') }}" method="POST">
             @csrf
             <input type="hidden" name="semester" value="{{ $semester }}">
             <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download</button>
         </form>
-        {{-- <form action="{{ route('print-indo') }}" method="POST">
+        <form action="{{ route('print-arab') }}" method="POST">
             @csrf
             <input type="hidden" name="semester" value="{{ $semester }}">
-            <button class="w-full bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download Arab</button>
-        </form> --}}
+            <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download Arab</button>
+        </form>
     </div>
         
     

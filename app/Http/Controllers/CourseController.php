@@ -30,14 +30,13 @@ class CourseController extends Controller
     }
     public function teacher(){
         if(Hash::check(env('DEFAULT_PASSWORD'),auth()->user()->password))return redirect('/password');
-        $room = Room::where('teacher_id',auth()->user()->teacher()->first()->nip)->first();
-        // dd($room);
-        if(!$room)return redirect('/dashboard');
+        $rooms = Room::where('teacher_id',auth()->user()->teacher()->first()->nip)->get();
+        if($rooms->count()==0)return redirect('/dashboard');
+        
         return view('teacher.pelajaran',[
             "title"=>"Admin",
             'active'=>'pelajaran',
-            "room"=>$room,
-            "courses"=>ClassCourse::where('class_code',$room->class_code)->get()
+            "rooms"=>$rooms,
         ]);
     }
     public function insert(Request $request){

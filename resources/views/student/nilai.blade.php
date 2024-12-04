@@ -8,9 +8,29 @@
     </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-3 mt-5">
-    @for ($i = 1; $i <= 6; $i++)
-        <a href="/nilai/siswa/semester/{{ $i }}" class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester {{ $i }}</a>
-    @endfor
+    @php
+        $semester = $student->room()->first()->semester;
+    @endphp
+    @if ($semester>12)
+        @for ($i = 13; $i <= 14; $i++)
+            <a href="/nilai/siswa/semester/{{ $i }}"
+                class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
+                {{ $i-12 }}</a>
+        @endfor            
+        @elseif($semester>6)
+        @for ($i = 7; $i <= 12; $i++)
+            <a href="/nilai/siswa/semester/{{ $i }}"
+                class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
+                {{ $i-6 }}</a>
+        @endfor
+        @else
+        @for ($i = 1; $i <= 6; $i++)
+            <a href="/nilai/siswa/semester/{{ $i }}"
+                class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
+                {{ $i }}</a>
+        @endfor
+            
+        @endif
 </div>
 
 @endsection

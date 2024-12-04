@@ -23,15 +23,12 @@ class DashboardController extends Controller
                     "title" => 'Super Admin'
                 ]);
             case 'teacher':
-                $teacher = Teacher::where('email', auth()->user()->email)->first();
-                $room = $teacher->room->first();
-                $courses = null;
-                if($room)$courses = $room->courses;
+                $teacher = auth()->user()->teacher()->first();
+                $rooms = $teacher->room()->get();
                 return view('teacher', [
                     "title" => ucwords($teacher->name),
                     'active' => 'dashboard',
-                    "room" => $room,
-                    "courses" => $courses,
+                    "rooms" => $rooms,
                     "teacher" => $teacher,
                 ]);
             case 'student':

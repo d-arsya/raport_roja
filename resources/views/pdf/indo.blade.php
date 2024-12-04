@@ -54,141 +54,147 @@
 <head>
     <style>
         /* General */
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      
-      .text-center {
-        text-align: center;
-      }
-      
-      .font-bold {
-        font-weight: bold;
-      }
-      
-      .text-xs {
-        font-size: 12px;
-      }
-      
-      .mt-4 {
-        margin-top: 1rem;
-      }
-      
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }    
-    
-      .table-auto {
-        width: auto;
-        border-collapse: collapse;
-      }
-      
-      .w-full {
-        width: 100%;
-      }
-      
-      .overflow-x-auto {
-        overflow-x: auto;
-      }
-      
-      .border {
-        border: 1px solid #000;
-      }
-      
-      .border-collapse {
-        border-collapse: collapse;
-      }
-      
-      .border-gray-950 {
-        border-color: #1a1a1a;
-      }
-      
-      .text-center th,
-      .text-center td {
-        text-align: center;
-      }
-      
-      th, td {
-        padding: 2px;
-      }
-      img {
-        display: block;
-      }
-      
-      p {
-        margin: 0;
-        line-height: 1.5;
-      }
-      
-      b {
-        font-weight: bold;
-      }
-      
-      </style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .text-xs {
+            font-size: 12px;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .table-auto {
+            width: auto;
+            border-collapse: collapse;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+
+        .border {
+            border: 1px solid #000;
+        }
+
+        .border-collapse {
+            border-collapse: collapse;
+        }
+
+        .border-gray-950 {
+            border-color: #1a1a1a;
+        }
+
+        .text-center th,
+        .text-center td {
+            text-align: center;
+        }
+
+        th,
+        td {
+            padding: 2px;
+        }
+
+        img {
+            display: block;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        b {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container mx-auto" id="print-body">
         <table style="width: 100%; text-align: center; margin-bottom: 0.2rem;">
             <tr>
-              <td style="width: 20%; text-align: center;">
-                <img width="120px" src="./assets/roja.png" alt="Logo Roja">
-              </td>
-              <td style="width: 60%; text-align: center; font-weight: bold; font-size: 12px;">
-                <p>HASIL BELAJAR PESERTA DIDIK <br>
-                DI PONDOK TMQ ROOHIATUL JANNAH <br>
-                HIDAYATULLAH SUKOHARJO</p>
-              </td>
-              <td style="width: 20%; text-align: center;">
-                <img width="70px" src="./assets/smi.png" alt="Logo SMI">
-              </td>
+                <td style="width: 20%; text-align: center;">
+                    <img width="120px" src="./assets/roja.png" alt="Logo Roja">
+                </td>
+                <td style="width: 60%; text-align: center; font-weight: bold; font-size: 12px;">
+                    <p>HASIL BELAJAR PESERTA DIDIK <br>
+                        DI PONDOK TMQ ROOHIATUL JANNAH <br>
+                        HIDAYATULLAH SUKOHARJO</p>
+                </td>
+                <td style="width: 20%; text-align: center;">
+                    <img width="70px" src="./assets/smi.png" alt="Logo SMI">
+                </td>
             </tr>
-          </table>
+        </table>
 
-          <table style="width: 100%; font-size: 12px; margin-bottom: 0.2rem;">
+        <table style="width: 100%; font-size: 12px; margin-bottom: 0.2rem;">
             <tr>
-              <td style="width: 60%;">
-                <table style="width: 100%; font-size: 12px;">
-                  <tr>
-                    <td style="width: 30%;">Nama Pondok</td>
-                    <td>: TMQ Rooihatul Jannah Hidayatullah</td>
-                  </tr>
-                  <tr>
-                    <td>Alamat</td>
-                    <td>: Brumbung RT 03/II, Dukuh, Sukoharjo, Sukoharjo</td>
-                  </tr>
-                  <tr>
-                    <td>Nama Peserta Didik</td>
-                    <td>: Aisyah Putri Ramadhani</td>
-                  </tr>
-                  <tr>
-                    <td>Nomor Induk</td>
-                    <td>: 20230001</td>
-                  </tr>
-                </table>
-              </td>
-              <td style="width: 40%;">
-                <table style="width: 100%; font-size: 12px;">
-                  <tr>
-                    <td>Semester</td>
-                    <td>: Genap</td>
-                  </tr>
-                  <tr>
-                    <td>Tahun Pelajaran</td>
-                    <td>: 2023/2024</td>
-                  </tr>
-                  <tr>
-                    <td style="color: white">-</td>
-                  </tr>
-                  <tr>
-                    <td style="color: white">-</td>
-                  </tr>
-                </table>
-              </td>
+                <td style="width: 60%;">
+                    <table style="width: 100%; font-size: 12px;">
+                        <tr>
+                            <td style="width: 30%;">Nama Pondok</td>
+                            <td>: TMQ Rooihatul Jannah Hidayatullah</td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td>: Brumbung RT 03/II, Dukuh, Sukoharjo, Sukoharjo</td>
+                        </tr>
+                        <tr>
+                            <td>Nama Peserta Didik</td>
+                            <td>: {{ $student->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nomor Induk</td>
+                            <td>: {{ $student->nis }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 40%;">
+                    <table style="width: 100%; font-size: 12px;">
+                        <tr>
+                            <td>Semester</td>
+                            <td>: {{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }}</td>
+                        </tr>
+                        <tr>
+                            @php
+                                $semester = $semester % 2 == 0 ? $semester - 1 : $semester;
+                            @endphp
+                            <td>Tahun Pelajaran</td>
+                            <td>:
+                                {{ $student->group()->first()->year + floor($semester / 2) }}/{{ $student->group()->first()->year + (floor($semester / 2) + 1) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color: white">-</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white">-</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
-          </table>
+        </table>
 
         <div class="mt-4">
             <div class="overflow-x-auto">
@@ -246,13 +252,15 @@
                         @endforeach
                         <tr>
                             <td colspan="2" class="border border-gray-950 text-center font-bold">JUMLAH NILAI</td>
-                            <td class="border border-gray-950 text-center" colspan="2">{{ $grades->sum('grade') }}</td>
+                            <td class="border border-gray-950 text-center" colspan="2">{{ $grades->sum('grade') }}
+                            </td>
                             <td class="border border-gray-950"></td>
                             <td class="border border-gray-950"></td>
                         </tr>
                         <tr>
                             <td colspan="2" class="border border-gray-950 text-center font-bold">RATA-RATA</td>
-                            <td class="border border-gray-950 text-center" colspan="2">{{ round($grades->avg('grade'),2) }}</td>
+                            <td class="border border-gray-950 text-center" colspan="2">
+                                {{ round($grades->avg('grade'), 2) }}</td>
                             <td class="border border-gray-950"></td>
                             <td class="border border-gray-950"></td>
                         </tr>
@@ -307,44 +315,45 @@
 
             <div style="margin-top: 1rem; font-size: 12px;">
                 <table style="width: 100%; margin-bottom: 1rem; border-collapse: collapse;">
-                  <tr>
-                    <td style="width: 50%; vertical-align: top;">
-                      <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                          <td style="width: 50%; padding: 0.1rem;">Diberikan di</td>
-                          <td style="width: 50%; padding: 0.1rem;">: Sukoharjo</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 0.1rem;">Tanggal</td>
-                          <td style="padding: 0.1rem;">: {{ Carbon\Carbon::now()->translatedFormat('d F Y') }}</td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td style="width: 50%;"></td>
-                  </tr>
+                    <tr>
+                        <td style="width: 50%; vertical-align: top;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 50%; padding: 0.1rem;">Diberikan di</td>
+                                    <td style="width: 50%; padding: 0.1rem;">: Sukoharjo</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.1rem;">Tanggal</td>
+                                    <td style="padding: 0.1rem;">:
+                                        {{ Carbon\Carbon::now()->translatedFormat('d F Y') }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 50%;"></td>
+                    </tr>
                 </table>
-              
+
                 <table style="width: 100%; text-align: center; border-collapse: collapse; margin-top: 1rem;">
-                  <tr>
-                    <td style="width: 33%; padding: 0.5rem;">
-                      <p>Mengetahui, <br>(Orang Tua / Wali)</p>
-                      <br><br><br>
-                      <p>........................................</p>
-                    </td>
-                    <td style="width: 33%; padding: 0.5rem;">
-                      <p>Wali Kelas <br><br></p>
-                      <br><br><br>
-                      <p>........................................</p>
-                    </td>
-                    <td style="width: 33%; padding: 0.5rem;">
-                      <p>Mudiroh Pondok <br><br></p>
-                      <br><br>
-                      <p><b>Al Ustadzah Rohimah Zahrotul Jannah</b></p>
-                    </td>
-                  </tr>
+                    <tr>
+                        <td style="width: 33%; padding: 0.5rem;">
+                            <p>Mengetahui, <br>(Orang Tua / Wali)</p>
+                            <br><br><br>
+                            <p>........................................</p>
+                        </td>
+                        <td style="width: 33%; padding: 0.5rem;">
+                            <p>Wali Kelas <br><br></p>
+                            <br><br><br>
+                            <p>........................................</p>
+                        </td>
+                        <td style="width: 33%; padding: 0.5rem;">
+                            <p>Mudiroh Pondok <br><br></p>
+                            <br><br>
+                            <p><b>Al Ustadzah Rohimah Zahrotul Jannah</b></p>
+                        </td>
+                    </tr>
                 </table>
-              </div>
-              
+            </div>
+
         </div>
     </div>
 </body>

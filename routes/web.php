@@ -33,6 +33,7 @@ Route::get('/password', function () {
 Route::post('/', [LoginController::class,'login']);
 Route::middleware('auth')->group(function(){
     Route::post('/down-indo', [GradeController::class, 'downloadIndo'])->name('print-indo');
+    Route::post('/down-arab', [GradeController::class, 'downloadArab'])->name('print-arab');
     Route::get('/dashboard', [DashboardController::class,'index']);
     Route::get('/logout', [LoginController::class,'logout']);
     

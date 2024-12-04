@@ -10,7 +10,7 @@
     </div>
 </div>    
 @endif
-<input type="text" class="w-full p-3 mb-4 rounded-lg text-medium text-pink-600 border border-px border-pink-600 ring-pink-600" placeholder="Cari...">
+{{-- <input type="text" class="w-full p-3 mb-4 rounded-lg text-medium text-pink-600 border border-px border-pink-600 ring-pink-600" placeholder="Cari..."> --}}
 <div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center rounded-t-lg">Daftar Santri</div>
 <div class="grid grid-cols-2 md:grid-cols-5">
 @foreach ($students as $student)

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-<input type="text" class="w-full">
+{{-- <input type="text" class="w-full"> --}}
 <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 justify-align-center gap-3">
     
     @foreach ($students as $siswa)
