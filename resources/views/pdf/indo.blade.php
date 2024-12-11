@@ -162,7 +162,7 @@
                         </tr>
                         <tr>
                             <td>Nama Peserta Didik</td>
-                            <td>: {{ $student->name }}</td>
+                            <td>: {{ ucwords($student->name) }}</td>
                         </tr>
                         <tr>
                             <td>Nomor Induk</td>
@@ -343,7 +343,8 @@
                         <td style="width: 33%; padding: 0.5rem;">
                             <p>Wali Kelas <br><br></p>
                             <br><br><br>
-                            <p>........................................</p>
+                            <p><b>{{  ucwords($student->room()->first()->teacher()->first()->name) }}</b></p>
+                            {{-- <p>........................................</p> --}}
                         </td>
                         <td style="width: 33%; padding: 0.5rem;">
                             <p>Mudiroh Pondok <br><br></p>

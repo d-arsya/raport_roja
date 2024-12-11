@@ -44,9 +44,10 @@ class GroupController extends Controller
         $file = $req->file('user_data');
         $fileHandle = fopen($file->getRealPath(), 'r');
         fgetcsv($fileHandle);
-        while ($new = fgetcsv($fileHandle)) {
-            // Buat user baru
-            $data = explode(";",$new[0]);
+        while ($data = fgetcsv($fileHandle)) {
+            // // Buat user baru
+            // dd($new);
+            // $data = explode(",",$new[0]);
             User::create([
                 "email" => $data[3],
                 "password" => Hash::make(env('DEFAULT_PASSWORD')),

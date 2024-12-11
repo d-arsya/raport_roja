@@ -66,10 +66,13 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
     <meta charset="UTF-8">
+    <title>{{ $judul }}</title>
 <head>
     <style>
         /* General */
+        
         body {
+            visibility: hidden;
             direction: rtl; /* Mengatur teks dari kanan ke kiri */
             font-family: 'Amiri', sans-serif; /* Gunakan font Arab */
         }
@@ -145,6 +148,11 @@
 
         b {
             font-weight: bold;
+        }
+        @media print{
+            body{
+                visibility: visible;
+            }
         }
     </style>
 </head>
@@ -430,7 +438,8 @@
                         <td style="width: 33%; padding: 0.5rem;">
                             <p>ولي الفصل <br><br></p>
                             <br><br><br>
-                            <p>........................................</p>
+                            {{-- <p>........................................</p> --}}
+                            <p><b>{{ $student->room()->first()->teacher()->first()->name_arabic }}</b></p>
                         </td>
                         <td style="width: 33%; padding: 0.5rem;">
                             <p>مديرة المعهد <br><br></p>
@@ -442,6 +451,10 @@
             </div>
         </div>
     </div>
+    <script>
+        window.print()
+        window.addEventListener("afterprint",()=>window.history.back())
+    </script>
 </body>
 
 </html>
