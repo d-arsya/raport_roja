@@ -33,7 +33,9 @@ class TeacherController extends Controller
             $file = $request->file('user_data');
             $fileHandle = fopen($file->getRealPath(), 'r');
             fgetcsv($fileHandle);
-            while ($data = fgetcsv($fileHandle)) {
+            while ($new = fgetcsv($fileHandle)) {
+                $data = explode(";",$new[0]);
+                // dd($data);
                 User::create([
                     "email" => $data[3],
                     "password" => Hash::make(env('DEFAULT_PASSWORD')),

@@ -73,7 +73,7 @@
             const lines = csvData.split('\n');
 
             lines.forEach(line => {
-                const [number, value] = line.split(',');
+                const [number, value] = line.split(';');
 
                 if (number && value) {
                     const input = document.querySelector(`input[name="${number.trim()}"]`);

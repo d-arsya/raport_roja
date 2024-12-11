@@ -15,8 +15,11 @@
 <div class="grid grid-cols-2 md:grid-cols-5">
 @foreach ($students as $student)
     <div class="py-1 border border-px border-pink-600">
-        <h1 class="text-center">{{ ucwords($student->name) }}</h1>
-        <h1 class="text-center">{{ $student->nis }}(<a href="/grup/{{ $student->group->name }}">{{ $student->group->name }}</a>)</h1>
+        <a href="/nilai?nis={{ $student->nis }}">
+            <h1 class="text-center">{{ ucwords($student->name) }}</h1>
+            <h1 class="text-center">{{ $student->nis }}({{ $student->room->name }})</h1>
+
+        </a>
     </div>
     
     @endforeach

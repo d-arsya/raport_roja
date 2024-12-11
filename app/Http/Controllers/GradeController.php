@@ -17,15 +17,16 @@ use Illuminate\Http\Request;
 
 class GradeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $role = auth()->user()->role;
-        if (!in_array($role, ['student', 'teacher'])) return redirect('/dashboard');
         switch ($role) {
             case 'teacher':
                 return $this->teacher();
             case 'student':
-                return $this->student();
+                return $this->student($request);
+            case 'admin':
+                return $this->student($request);
         }
     }
     public function teacher()
@@ -39,12 +40,16 @@ class GradeController extends Controller
             "title" => "Nilai ",
         ]);
     }
-    public function student()
+    public function student(Request $request)
     {
         // $room = Room::where('teacher_id',auth()->user()->username)->first();
         // $courses = $room->courses;
         // $students = $room->students();
-        $student = Student::where('email', auth()->user()->email)->first();
+        if($request->query('nis')){
+            $student = Student::where('nis', $request->query('nis'))->first();
+        }else{
+            $student = Student::where('email', auth()->user()->email)->first();
+        }
         return view('student.nilai', [
             "active" => "nilai",
             // "room"=>$room,
@@ -94,7 +99,11 @@ class GradeController extends Controller
     }
     public function viewBelongStudent(Request $request, $semester)
     {
-        $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        if($request->query('nis')){
+            $student = Student::where('nis', $request->query('nis'))->first();
+        }else{
+            $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        }
         $grade = Grade::where('semester', $semester)->where('student_id', $student->nis);
         $courses = $grade->pluck('course_id');
         $courses = ClassCourse::whereIn('id', $courses);
@@ -224,11 +233,16 @@ class GradeController extends Controller
     public function downloadIndo(Request $request)
     {
         $semester = $request->semester;
-        $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        if (auth()->user()->role == "student") {
+            $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        }else{
+            $student = Student::where('nis', $request->nis)->first();
+        }
         $grade = Grade::where('semester', $semester)->where('student_id', $student->nis);
         $courses = $grade->pluck('course_id');
         $courses = ClassCourse::whereIn('id', $courses)->get();
         $extra = ExtraCourseGrade::where('semester', $semester)->where('student_id', $student->nis);
+        // dd($grade->get());
         $abcents = AbcentStatus::where('semester', $semester)->where('student_id', $student->nis);
         $personalities = PersonalityGrade::where('semester', $semester)->where('student_id', $student->nis);
         $codeAgama = $courses->where('varian','agama')->pluck('id');
