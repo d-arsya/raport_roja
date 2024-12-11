@@ -46,7 +46,7 @@
                                 required="">
                         </div>
                         <a href="#"
-                            class="text-sm font-medium text-lime-400 hover:underline"><h1 class="text-end">Forgot
+                            class="hidden text-sm font-medium text-lime-400 hover:underline"><h1 class="text-end">Forgot
                                 password?
                                 </h1></a>
                                 <div class="flex justify-center">

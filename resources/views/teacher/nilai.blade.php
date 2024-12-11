@@ -16,7 +16,7 @@
 </div>
 @if ($room->course==0)
 <h1 class="text-center text-xl font-semibold italic mt-36">Silahkan simpan permanen daftar pelajaran terlebih dahulu</h1>
-<a href="/pelajaran" class="text-center block bg-pink-600 p-2 text-white text-xl mt-3 hover:bg-pink-700 rounded-lg w-min m-auto">Pelajaran</a>
+<a href="/pelajaran" class="text-center block bg-pink-600 p-2 text-white text-xl mt-3 mb-6 hover:bg-pink-700 rounded-lg w-min m-auto">Pelajaran</a>
 @else   
 <div class="hover:bg-lime-800 bg-lime-600 text-white p-2 rounded-b-md text-md text-center font-bold mt-5">
     Semester 1

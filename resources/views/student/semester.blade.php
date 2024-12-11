@@ -38,11 +38,11 @@
             <input type="hidden" name="semester" value="{{ $semester }}">
             <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download</button>
         </form>
-        <form action="{{ route('print-arab') }}" method="POST">
-            @csrf
-            <input type="hidden" name="semester" value="{{ $semester }}">
-            <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download Arab</button>
-        </form>
+        <!--<form action="{{ route('print-arab') }}" method="POST">-->
+        <!--    @csrf-->
+        <!--    <input type="hidden" name="semester" value="{{ $semester }}">-->
+        <!--    <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download Arab</button>-->
+        <!--</form>-->
     </div>
         
     

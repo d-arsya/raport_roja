@@ -24,6 +24,8 @@
             <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
         </svg>Tambah
     </label>
+    <a
+                download="Nilai {{$course->name}} - {{ substr(uniqid(),-4) }}.csv" href="{{ Storage::url('data/nilai.csv') }}" class="w-max text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">Template Nilai</a>
     <input type="file" class="hidden" accept="csv" name="csvFile" id="csvFile">
     <table class="w-full mt-5">
         <thead class="bg-pink-600">

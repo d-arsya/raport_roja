@@ -12,10 +12,10 @@
                 <h1 class="text-md font-semibold text-white">Pengampu : {{ ucwords($room->teacher->name) }}</h1>
             </div>
         </div>
-        <div onclick="openPopup('{{ $students[0]->group_id }}')"
-            class="rounded-lg bg-lime-600 hover:bg-lime-700 p-2 w-min my-2 text-white cursor-pointer">
-            Tambah</div>
-        <div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center rounded-t-lg">Anggota Kelas</div>
+        <!--<div onclick="openPopup('{{ $students[0]->group_id }}')"-->
+        <!--    class="rounded-lg bg-lime-600 hover:bg-lime-700 p-2 w-min my-2 text-white cursor-pointer">-->
+        <!--    Tambah</div>-->
+        <div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center rounded-t-lg my-2">Anggota Kelas</div>
         <div class="grid grid-cols-1 md:grid-cols-4 mb-12">
             @for ($i = 0; $i < $students->count(); $i++)
                 <div class="py-1 border border-px border-pink-600">
