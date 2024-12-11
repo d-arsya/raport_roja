@@ -12,7 +12,9 @@ use App\Models\Personality;
 use App\Models\PersonalityGrade;
 use App\Models\Student;
 use App\Models\Room;
-use Barryvdh\DomPDF\Facade\Pdf;
+use ArPHP\I18N\Arabic;
+// use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
 use Illuminate\Http\Request;
 
 class GradeController extends Controller
@@ -193,7 +195,11 @@ class GradeController extends Controller
     public function downloadArab(Request $request)
     {
         $semester = $request->semester;
-        $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        if (auth()->user()->role == "student") {
+            $student = Student::where('nis', auth()->user()->student()->first()->nis)->first();
+        }else{
+            $student = Student::where('nis', $request->nis)->first();
+        }
         $grade = Grade::where('semester', $semester)->where('student_id', $student->nis);
         $courses = $grade->pluck('course_id');
         $courses = ClassCourse::whereIn('id', $courses)->get();
@@ -215,6 +221,9 @@ class GradeController extends Controller
         //     "abcents" => $abcents->get(),
         //     "personalities" => $personalities->get()
         // ]);
+        // $reportHtml = view('admin.reports.cutomReport', [])->render();
+        // $pdf = new Pdf('F:\roja' . '\vendor\h4cc\wkhtmltopdf-amd64\bin\wkhtmltopdf-amd64');
+        // $pdf->load
         $pdf = Pdf::loadView('pdf.arab',[
             "student" => $student,
             "title" => "Nilai " . ucwords($student->name) . " Semester " . ($semester % 2 == 0 ? "Genap" : "Ganjil"),
@@ -228,6 +237,29 @@ class GradeController extends Controller
             "abcents" => $abcents->get(),
             "personalities" => $personalities->get()
         ]);
+        // $reportHtml = view('pdf.arab',[
+        //     "student" => $student,
+        //     "title" => "Nilai " . ucwords($student->name) . " Semester " . ($semester % 2 == 0 ? "Genap" : "Ganjil"),
+        //     "active" => "nilai",
+        //     "semester" => $semester,
+        //     "courseUmum"=>$grade->get()->whereIn('course_id',$codeUmum),
+        //     "courses" => $courses,
+        //     "grades" => $grade->get(),
+        //     "courseAgama"=>$grade->get()->whereIn('course_id',$codeAgama),
+        //     "extras" => $extra->get(),
+        //     "abcents" => $abcents->get(),
+        //     "personalities" => $personalities->get()
+        // ])->render();
+        
+        // $arabic = new Arabic();
+        // $p = $arabic->arIdentify($reportHtml);
+        // // dd($p);
+        // for ($i = count($p)-1; $i >= 0; $i-=2) {
+        //     $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]),150,true,true);
+        //     $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        // }
+        
+        // $pdf = Pdf::loadHTML($reportHtml);
         return $pdf->download("Raport $student->name Semester $semester arabic version (diunduh pada ".now().").pdf");
     }
     public function downloadIndo(Request $request)

@@ -66,7 +66,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
     <meta charset="UTF-8">
-
 <head>
     <style>
         /* General */
@@ -156,7 +155,8 @@
         <table style="width: 100%; text-align: center; margin-bottom: 0.2rem;">
             <tr>
                 <td style="width: 20%; text-align: center;">
-                    <img width="120px" src="./assets/roja.png" alt="Logo Roja">
+                    <img width="120px" src="{{ asset('assets/roja.png') }}" alt="Logo Roja">
+                    {{-- <img width="120px" src="./assets/roja.png" alt="Logo Roja"> --}}
                 </td>
                 <td style="width: 60%; text-align: center; font-weight: bold; font-size: 12px;">
                     <p>
@@ -168,7 +168,8 @@
                     </p>
                 </td>
                 <td style="width: 20%; text-align: center;">
-                    <img width="70px" src="./assets/smi.png" alt="Logo SMI">
+                    <img width="120px" src="{{ asset('assets/smi.png') }}" alt="Logo SMI">
+                    {{-- <img width="70px" src="./assets/smi.png" alt="Logo SMI"> --}}
                 </td>
             </tr>
         </table>
@@ -408,7 +409,10 @@
                                         التاريخ
                                     </td>
                                     <td style="padding: 0.1rem;">:
-                                        {{ Carbon\Carbon::now()->translatedFormat('d F Y') }}</td>
+                                        @php
+                                            \Carbon\Carbon::setLocale('ar');
+                                        @endphp
+                                        {{ toArabic(Carbon\Carbon::now()->translatedFormat('d F Y')) }}</td>
                                 </tr>
                             </table>
                         </td>
