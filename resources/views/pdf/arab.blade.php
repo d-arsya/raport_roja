@@ -453,7 +453,10 @@
     </div>
     <script>
         window.print()
-        window.addEventListener("afterprint",()=>window.history.back())
+        setTimeout(function(){
+         window.addEventListener("afterprint",()=>window.history.back())
+        },100)
+       
     </script>
 </body>
 
