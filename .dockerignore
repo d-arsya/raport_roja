@@ -1,0 +1,10 @@
+.git
+.github
+.env
+vendor
+node_modules
+npm-debug.log
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
