@@ -1,0 +1,482 @@
+/* ==========================================================================
+   ROJA DESIGN SYSTEM — Global CSS Tokens & Components
+   Source: references/DESIGN.md & pondok-roja-system/libs/ui
+   ========================================================================== */
+
+:root {
+  --primary: #e4007e;
+  --primary-rgb: 228, 0, 126;
+  --secondary: #8dc31e;
+  --secondary-rgb: 141, 195, 30;
+  --tertiary: #1bc5bd;
+  --tertiary-rgb: 27, 197, 189;
+  --quaternary: #c694f9;
+  --quaternary-rgb: 198, 148, 249;
+  --quinary: #de2ff5;
+  --quinary-rgb: 222, 47, 245;
+  --danger: #f8374b;
+  --danger-rgb: 248, 55, 75;
+  --warning: #ffa800;
+  --warning-rgb: 255, 168, 0;
+  --success: #28af52;
+  --success-rgb: 40, 175, 82;
+  --info: #6866e9;
+  --info-rgb: 104, 102, 233;
+  --light: #f9f9f9;
+  --grey: #abb4be;
+  --grey-rgb: 171, 180, 190;
+  --dark: #17283c;
+  --dark-rgb: 23, 40, 60;
+  --white: #ffffff;
+
+  /* Muted Color Palette Tokens (50% Opacity) */
+  --muted-primary: rgba(var(--primary-rgb), 0.50);
+  --muted-secondary: rgba(var(--secondary-rgb), 0.50);
+  --muted-tertiary: rgba(var(--tertiary-rgb), 0.50);
+  --muted-quaternary: rgba(var(--quaternary-rgb), 0.50);
+  --muted-quinary: rgba(var(--quinary-rgb), 0.50);
+  --muted-danger: rgba(var(--danger-rgb), 0.50);
+  --muted-warning: rgba(var(--warning-rgb), 0.50);
+  --muted-success: rgba(var(--success-rgb), 0.50);
+  --muted-info: rgba(var(--info-rgb), 0.50);
+
+  --heading-txt-color: #4b4b4b;
+  --body-txt-color: #777777;
+  --muted-txt-color: #abb4be;
+  --heading-txt-inverse: #4b4b4b;
+  --body-txt-inverse: #777777;
+
+  --bg-primary: #ecedf0;
+  --bg-secondary: #fdfdfd;
+  --bg-tertiary: #f7f7f7;
+  --bg-quaternary: #f4f4f4;
+  --bg-form: #ffffff;
+  --bg-form-border: #eeeeee;
+  --bg-form-disabled: #F1F1FB;
+  --bg-login: #f7f7f7;
+  --bg-login-form: #ffffff;
+  --bg-inverse: #ffffff;
+  --bg-btn-light-inverse: #f9f9f9;
+  --table-inverse: #f3f3f3;
+  --table-head-txt-inverse: #777777;
+  --table-txt-inverse: #8a949b;
+  --scroolbar: #f1f1f1;
+  --scroolbar-thumb: #cccccc;
+  --scroolbar-hover: #a8a8a8;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  line-height: 1.4rem;
+  color: var(--body-txt-inverse);
+  background-color: var(--bg-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--heading-txt-inverse);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroolbar);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroolbar-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroolbar-hover);
+}
+
+/* ==========================================================================
+   ROJA BUTTONS
+   ========================================================================== */
+.roja_btn {
+  font-size: 12px;
+  font-weight: 500;
+  min-height: 2.5rem; /* 40px */
+  padding: 0 1rem;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  box-shadow: none;
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.roja_btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.roja_btn:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+.roja_btn-sm {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 11px;
+  border-radius: 6px;
+}
+
+.roja_btn-lg {
+  min-height: 48px;
+  padding: 0 24px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.roja_btn-square {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+/* Button Variants */
+.roja_btn-primary {
+  background-color: var(--primary);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--primary-rgb), 0.25);
+}
+.roja_btn-primary:hover {
+  background-color: #c9006f;
+  box-shadow: 0px 10px 20px rgba(var(--primary-rgb), 0.35);
+}
+
+.roja_btn-secondary {
+  background-color: var(--secondary);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--secondary-rgb), 0.25);
+}
+.roja_btn-secondary:hover {
+  background-color: #79a819;
+}
+
+.roja_btn-danger {
+  background-color: var(--danger);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--danger-rgb), 0.25);
+}
+
+.roja_btn-warning {
+  background-color: var(--warning);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--warning-rgb), 0.25);
+}
+
+.roja_btn-success {
+  background-color: var(--success);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--success-rgb), 0.25);
+}
+
+.roja_btn-info {
+  background-color: var(--info);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--info-rgb), 0.25);
+}
+
+.roja_btn-dark {
+  background-color: var(--dark);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--dark-rgb), 0.25);
+}
+
+.roja_btn-light-primary {
+  background-color: rgba(var(--primary-rgb), 0.12);
+  color: var(--primary) !important;
+}
+.roja_btn-light-primary:hover {
+  background-color: var(--primary);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--primary-rgb), 0.25);
+}
+
+.roja_btn-light-secondary {
+  background-color: rgba(var(--secondary-rgb), 0.12);
+  color: var(--secondary) !important;
+}
+.roja_btn-light-secondary:hover {
+  background-color: var(--secondary);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--secondary-rgb), 0.25);
+}
+
+.roja_btn-light-danger {
+  background-color: rgba(var(--danger-rgb), 0.12);
+  color: var(--danger) !important;
+}
+.roja_btn-light-danger:hover {
+  background-color: var(--danger);
+  color: #ffffff !important;
+  box-shadow: 0px 8px 16px rgba(var(--danger-rgb), 0.25);
+}
+
+.roja_btn-light {
+  background-color: #ffffff;
+  color: var(--grey) !important;
+  border: 1px solid var(--bg-form-border);
+}
+.roja_btn-light:hover {
+  color: var(--heading-txt-inverse) !important;
+  background-color: var(--bg-quaternary);
+}
+
+/* ==========================================================================
+   ROJA LABELS / BADGES
+   ========================================================================== */
+.roja_label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+
+.roja_label-primary {
+  background: rgba(var(--primary-rgb), 0.12);
+  color: var(--primary);
+}
+.roja_label-secondary {
+  background: rgba(var(--secondary-rgb), 0.12);
+  color: var(--secondary);
+}
+.roja_label-tertiary {
+  background: rgba(var(--tertiary-rgb), 0.12);
+  color: var(--tertiary);
+}
+.roja_label-danger {
+  background: rgba(var(--danger-rgb), 0.12);
+  color: var(--danger);
+}
+.roja_label-warning {
+  background: rgba(var(--warning-rgb), 0.12);
+  color: #d98f00;
+}
+.roja_label-success {
+  background: rgba(var(--success-rgb), 0.12);
+  color: var(--success);
+}
+.roja_label-info {
+  background: rgba(var(--info-rgb), 0.12);
+  color: var(--info);
+}
+.roja_label-grey {
+  background: rgba(var(--grey-rgb), 0.15);
+  color: #555555;
+}
+
+/* ==========================================================================
+   ROJA FORMS
+   ========================================================================== */
+.form-control {
+  width: 100%;
+  background-color: var(--bg-form);
+  border: 2px solid var(--bg-form-border);
+  border-radius: 8px;
+  padding: 0 16px;
+  min-height: 42px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--body-txt-inverse);
+  box-shadow: none;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.form-control::placeholder {
+  color: var(--grey);
+}
+
+.form-control:focus,
+.form-control:active {
+  border-color: var(--secondary);
+  outline: none;
+  background-color: #ffffff;
+}
+
+.form-control.is-invalid {
+  border-color: var(--danger);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group .control-label {
+  display: block;
+  font-weight: 600;
+  line-height: 20px;
+  margin-bottom: 6px;
+  color: var(--heading-txt-inverse);
+  font-size: 12px;
+}
+
+.invalid-feedback {
+  color: var(--danger);
+  line-height: 18px;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  display: block;
+}
+
+/* ==========================================================================
+   ROJA CARDS & CONTAINERS
+   ========================================================================== */
+.roja_card {
+  background-color: var(--bg-secondary);
+  border-radius: 16px;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.roja_card .card-header {
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--bg-form-border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roja_card .card-body {
+  padding: 24px;
+  color: var(--body-txt-inverse);
+}
+
+.roja_card_wizard {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  box-shadow: 0px 8px 32px rgba(31, 38, 135, 0.08);
+  position: relative;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.roja_bg_blobs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 389px;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url('/assets/svg/etc/Register-Bg.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+/* ==========================================================================
+   ROJA HEADER & SHELL
+   ========================================================================== */
+.roja_header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--heading-txt-inverse);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.roja_header.scrolled {
+  background-color: rgba(228, 0, 126, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #ffffff !important;
+  border-bottom-color: rgba(228, 0, 126, 0.9) !important;
+  box-shadow: 0px 8px 20px rgba(228, 0, 126, 0.15) !important;
+}
+
+.roja_header_date {
+  background-color: rgba(255, 255, 255, 0.85);
+  color: var(--heading-txt-inverse);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.roja_header.scrolled .roja_header_date {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.roja_header.scrolled .roja_header_text {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   ROJA WIZARD / BACKGROUND BLOBS (1:1 with pondok-roja-system)
+   ========================================================================== */
+.roja_wizard_container {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.roja_bg_blobs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 389px;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url('/assets/svg/etc/Register-Bg.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+.roja_card_wizard {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+

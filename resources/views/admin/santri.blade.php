@@ -1,31 +1,40 @@
 @extends('layouts.main')
-@section('container')
-@if ($active=='kelas')
-<div class="p-4 bg-pink-600 rounded-lg mb-3">
-    <h1 class="text-3xl font-bold text-white">Data Kelas</h1>
-    <div class="mt-4">
-        <h1 class="text-md font-semibold text-white">Nama : {{ $room->name }}</h1>
-        <h1 class="text-md font-semibold text-white">Siswa : {{ $students->count() }} Siswa</h1>
-        <h1 class="text-md font-semibold text-white">Pengampu : {{ $room->teacher->name }}</h1>
-    </div>
-</div>    
-@endif
-{{-- <input type="text" class="w-full p-3 mb-4 rounded-lg text-medium text-pink-600 border border-px border-pink-600 ring-pink-600" placeholder="Cari..."> --}}
-<div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center rounded-t-lg">Daftar Santri</div>
-<div class="grid grid-cols-2 md:grid-cols-5">
-@foreach ($students as $student)
-    <div class="py-1 border border-px border-pink-600">
-        <a href="/nilai?nis={{ $student->nis }}">
-            <h1 class="text-center">{{ ucwords($student->name) }}</h1>
-            <h1 class="text-center">{{ $student->nis }}({{ $student->room->name }})</h1>
 
+@section('container')
+<div class="mb-6">
+    <x-roja.page-header
+        title="{{ isset($room) ? 'Santri Kelas: ' . $room->name : 'Daftar Santri' }}"
+        subtitle="{{ isset($room) ? 'Pengampu: ' . ucwords($room->teacher->name ?? '-') : 'Daftar seluruh santri aktif' }}"
+        :breadcrumbs="[['label' => 'Kelas', 'url' => '/kelas'], ['label' => $room->name ?? 'Santri']]"
+    />
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    @foreach ($students as $student)
+        <a href="/nilai?nis={{ $student->nis }}" class="roja_card p-5 hover:shadow-roja-md hover:-translate-y-0.5 transition-all duration-200 group">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center font-bold text-sm shrink-0 transition-colors">
+                    {{ strtoupper(substr($student->name, 0, 1)) }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h4 class="text-sm font-bold text-[#17283c] group-hover:text-primary transition-colors truncate">
+                        {{ ucwords($student->name) }}
+                    </h4>
+                    <div class="mt-1 flex items-center gap-2">
+                        <x-roja.badge variant="secondary">
+                            NIS: {{ $student->nis }}
+                        </x-roja.badge>
+                        <x-roja.badge variant="info">
+                            {{ $student->room->name ?? '-' }}
+                        </x-roja.badge>
+                    </div>
+                </div>
+            </div>
         </a>
-    </div>
-    
     @endforeach
 </div>
-<div class="p-5 text-bold">
-    {{ $students->links() }}
 
+<div class="mt-6">
+    {{ $students->links() }}
 </div>
 @endsection

@@ -1,147 +1,150 @@
 @extends('layouts.main')
-@section('container')
-@if (session('success'))
-    <div id="alert-1" class="flex items-center p-4 my-4 text-blue-800 rounded-lg bg-blue-50" role="alert">
-        <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-            viewBox="0 0 20 20">
-            <path
-                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-        </svg>
-        <span class="sr-only">Info</span>
-        <div class="ms-3 text-sm font-medium">
-            {{ session('success') }}
-        </div>
 
-        <button type="button"
-            class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-lime-600 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:hover:bg-gray-700"
-            data-dismiss-target="#alert-1" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-            </svg>
-        </button>
+@section('container')
+<div class="mb-6">
+    <x-roja.page-header
+        title="Daftar Pelajaran Kelas"
+        subtitle="Kelola mata pelajaran dan KKM untuk masing-masing kelas yang diampu"
+        :breadcrumbs="[['label' => 'Pelajaran']]"
+    />
+</div>
+
+@if (session('success'))
+    <div class="mb-4 p-4 rounded-2xl bg-success/10 text-success text-xs font-semibold flex items-center gap-2 border border-success/20">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>{{ session('success') }}</span>
     </div>
 @endif
-    @foreach ($rooms as $room)
-        @php
-            $courses = App\Models\ClassCourse::where('class_code', $room->class_code)->get();
-        @endphp
-        <h1 class="text-center font-bold text-2xl mb-6">Pelajaran {{ $room->name }}</h1>
-        @if ($room->course == 0)
-            <div onclick="openPopup('{{ $room->class_code }}')"
-                class="inline mt-5 w-max text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5 12h14m-7 7V5" />
-                </svg>Tambah
-            </div>
-            <a href="/pelajaran/permanen/{{ $room->class_code }}"
-                class="inline w-max text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">Permanen
-            </a>
-        @endif
-        <table class="w-full mt-4 mb-36">
-            <thead class="text-xs text-white uppercase bg-pink-600">
-                <tr>
-                    <th scope="col" class="px-6 py-3 rounded-ss-lg">
-                        Nama Pelajaran
-                    </th>
-                    <th scope="col" class="hidden md:table-cell px-6 py-3">
-                        Nama Arab
-                    </th>
-                    <th scope="col" class="hidden md:table-cell px-6 py-3">
-                        Jenis
-                    </th>
-                    <th scope="col" class="px-6 py-3 rounded-se-lg">
-                        KKM
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($courses as $course)
-                    <tr class="bg-white border-1 border-grey-900 dark:bg-gray-800 dark:border-gray-700">
-                        <td class="px-6 py-4">
-                            @if ($room->course == 0)
-                                <a class="text-red-600" href="/pelajaran/hapus/kelas/{{ $course->id }}"><img
-                                        class="inline" src="{{ Storage::url('assets/trash.svg') }}" alt=""> </a>
-                            @endif
-                            {{ $course->name }}
-                        </td>
-                        <td class="px-6 py-4 text-end hidden md:table-cell">
-                            {{ $course->name_arabic }}
-                        </td>
-                        <td class="px-6 py-4 text-center hidden md:table-cell">
-                            {{ $course->varian }}
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            @if ($room->course == 0)
-                                <form action="/pelajaran/ubah/kelas" method="POST">
-                                    @csrf
-                                    <input type="number" name="id" class="hidden" value="{{ $course->id }}">
-                                    <input type="text" class="w-10 text-center rounded-lg bg-slate-300" maxlength="2"
-                                        name="kkm" value="{{ $course->kkm }}" id="">
-                                    <input type="submit" value="Ubah"
-                                        class="hover:text-white hover:bg-pink-600 font-semibold text-xs p-1 rounded-md">
-                                </form>
-                            @else
-                                {{ $course->kkm }}
-                            @endif
-                        </td>
-                    </tr>
 
-                @endforeach
-            </tbody>
-        </table>
-        @endforeach
-        <div id="popup"
-            class="hidden fixed bg-black top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-opacity-60">
-            <div class="rounded-md w-96 bg-white px-10 py-4 absolute">
-                <h1 class="text-3xl font-bold mb-4 text-center text-pink-600">Tambah Pelajaran</h1>
-                <form action="/pelajaran/tambah/kelas" method="POST">
-                    @csrf
-                    <input type="text" class="hidden" name="class_code">
-                    <input type="text" name="name" placeholder="Nama Pelajaran"
-                        class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                    <input type="text" name="arabic" placeholder="Nama Arab"
-                        class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                    <input type="number" name="kkm" placeholder="KKM"
-                        class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                    <select name="varian"
-                        class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-lime-600 focus:border-lime-600 block w-full p-2.5">
-                        <option value="akademik">Akademik</option>
-                        <option value="agama">Agama</option>
-                    </select>
-                    <input type="submit" value="Tambah"
-                        class="rounded-lg bg-white border border-1 border-pink-600 hover:bg-pink-600 w-full p-3 text-pink-600 hover:text-white font-semibold cursor-pointer">
-                    <div onclick="closePopup()"
-                        class="text-center w-full p-3 text-red-600 hover:text-red-400 font-semibold cursor-pointer">Batal
-                    </div>
-                </form>
+@foreach ($rooms as $room)
+    @php
+        $courses = App\Models\ClassCourse::where('class_code', $room->class_code)->get();
+    @endphp
+    <div class="roja_card p-6 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+                    {{ substr($room->name, 0, 2) }}
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-[#17283c]">Pelajaran Kelas {{ $room->name }}</h3>
+                    <p class="text-xs text-slate-400">
+                        Status Kurikulum: <span class="font-semibold {{ $room->course == 0 ? 'text-warning' : 'text-success' }}">{{ $room->course == 0 ? 'Draft / Belum Permanen' : 'Permanen' }}</span>
+                    </p>
+                </div>
             </div>
+
+            @if ($room->course == 0)
+                <div class="flex items-center gap-2">
+                    <x-roja.button type="button" onclick="openPopupCourse('{{ $room->class_code }}')" variant="primary" size="sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        <span>Tambah Mapel</span>
+                    </x-roja.button>
+
+                    <x-roja.button href="/pelajaran/permanen/{{ $room->class_code }}" onclick="return confirm('Kunci kurikulum kelas ini secara permanen?')" variant="secondary" size="sm">
+                        <span>Kunci Permanen</span>
+                    </x-roja.button>
+                </div>
+            @endif
         </div>
-        <script>
-            function openPopup(classCode) {
-                document.getElementById('popup').classList.remove('hidden')
-                document.querySelector('input[name="class_code"]').value = classCode
-            }
 
-            function closePopup() {
-                document.querySelector('input[name="name"]').value = ""
-                document.querySelector('input[name="arabic"]').value = ""
-                document.querySelector('input[name="kkm"]').value = ""
-                document.getElementById('popup').classList.add('hidden')
-            }
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('[aria-label="Close"]').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const alert = button.closest('[role="alert"]');
-                        if (alert) {
-                            alert.remove();
-                        }
-                    });
-                });
-            });
-        </script>
-    @endsection
+        <div class="overflow-x-auto mt-4">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+                        <th class="px-6 py-3">Mata Pelajaran</th>
+                        <th class="px-6 py-3 hidden md:table-cell">Nama Arab</th>
+                        <th class="px-6 py-3 text-center hidden md:table-cell">Kategori</th>
+                        <th class="px-6 py-3 text-center">Nilai KKM</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse ($courses as $course)
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="px-6 py-3 font-semibold text-[#17283c] flex items-center gap-2">
+                                @if ($room->course == 0)
+                                    <a href="/pelajaran/hapus/kelas/{{ $course->id }}" onclick="return confirm('Hapus pelajaran dari kelas ini?')" class="text-danger hover:opacity-80 p-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </a>
+                                @endif
+                                <span>{{ $course->name }}</span>
+                            </td>
+                            <td class="px-6 py-3 text-slate-500 font-arabic text-sm hidden md:table-cell">
+                                {{ $course->name_arabic ?? '-' }}
+                            </td>
+                            <td class="px-6 py-3 text-center hidden md:table-cell">
+                                <x-roja.badge variant="{{ strtolower($course->varian) === 'agama' ? 'secondary' : 'info' }}">
+                                    {{ ucfirst($course->varian) }}
+                                </x-roja.badge>
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                @if ($room->course == 0)
+                                    <form action="/pelajaran/ubah/kelas" method="POST" class="inline-flex items-center gap-1.5">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $course->id }}">
+                                        <input type="text" maxlength="3" name="kkm" value="{{ $course->kkm }}" class="form-control text-center font-bold text-xs h-8 w-14 rounded-lg" />
+                                        <button type="submit" class="roja_btn roja_btn-primary roja_btn-sm text-[10px] px-2 h-8 min-h-0">
+                                            Simpan
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="font-bold text-slate-800">{{ $course->kkm }}</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-slate-400">
+                                Belum ada mata pelajaran yang ditambahkan ke kelas ini.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endforeach
+
+<!-- Modal Tambah Pelajaran Kelas -->
+<x-roja.modal id="modal-tambah-pelajaran-kelas" title="Tambah Pelajaran ke Kelas">
+    <form action="/pelajaran/tambah/kelas" method="POST" class="space-y-4">
+        @csrf
+        <input type="hidden" name="class_code" id="modal_class_code">
+        <x-roja.input label="Nama Pelajaran" name="name" placeholder="Contoh: Matematika" required />
+        <x-roja.input label="Nama Arab (Opsional)" name="arabic" placeholder="Nama Arab" />
+        <x-roja.input label="KKM" name="kkm" type="number" placeholder="75" required />
+        
+        <div class="form-group mb-4">
+            <label for="varian" class="control-label font-semibold text-xs text-[#17283c] mb-1.5 block">
+                Kategori <span class="text-danger">*</span>
+            </label>
+            <select name="varian" id="varian" required class="form-control text-xs">
+                <option value="akademik">Akademik</option>
+                <option value="agama">Agama</option>
+            </select>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2">
+            <x-roja.button type="button" onclick="closeModal('modal-tambah-pelajaran-kelas')" variant="light">
+                Batal
+            </x-roja.button>
+            <x-roja.button type="submit" variant="primary">
+                Simpan
+            </x-roja.button>
+        </div>
+    </form>
+</x-roja.modal>
+
+<script>
+function openPopupCourse(classCode) {
+    document.getElementById('modal_class_code').value = classCode;
+    openModal('modal-tambah-pelajaran-kelas');
+}
+</script>
+@endsection

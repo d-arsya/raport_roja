@@ -1,106 +1,171 @@
 @extends('layouts.main')
+
 @section('container')
-<div class="p-4 bg-pink-600 rounded-lg">
-    <h1 class="text-3xl font-bold text-white">Data Nilai</h1>
-    <div class="mt-4">
-        <h1 class="text-md font-semibold text-white">Nama : {{ ucwords($student->name) }}</h1>
-        <h1 class="text-md font-semibold text-white">Kelas : {{ $room->name }}</h1>
-        <h1 class="text-md font-semibold text-white">Rata-rata : {{ round($grades->avg('grade'),2) }}</h1>
-        <h1 class="text-md font-semibold text-white">Semester : {{ $semester%2==0?"Genap":"Ganjil" }}</h1>
+<div class="mb-6">
+    <x-roja.page-header
+        title="Raport Santri: {{ ucwords($student->name) }}"
+        subtitle="Kelas {{ $room->name }} - Semester {{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }} | Rata-rata: {{ round($grades->avg('grade'), 2) }}"
+        :breadcrumbs="[['label' => 'Nilai', 'url' => '/nilai'], ['label' => ucwords($student->name)]]"
+    />
+</div>
+
+<!-- Quick Actions: PDF Downloads -->
+<div class="roja_card p-5 mb-6 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center font-bold text-sm">
+            {{ strtoupper(substr($student->name, 0, 1)) }}
+        </div>
+        <div>
+            <h4 class="text-sm font-bold text-[#17283c]">{{ ucwords($student->name) }}</h4>
+            <p class="text-xs text-slate-400">NIS: {{ $student->nis }}</p>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <form action="{{ route('print-indo') }}" method="POST" target="_blank">
+            @csrf
+            <input type="hidden" name="nis" value="{{ $student->nis }}">
+            <input type="hidden" name="semester" value="{{ $semester }}">
+            <x-roja.button type="submit" variant="primary" size="sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span>Cetak Raport (Indo)</span>
+            </x-roja.button>
+        </form>
+
+        <form action="{{ route('print-arab') }}" method="POST" target="_blank">
+            @csrf
+            <input type="hidden" name="nis" value="{{ $student->nis }}">
+            <input type="hidden" name="semester" value="{{ $semester }}">
+            <x-roja.button type="submit" variant="secondary" size="sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span>Cetak Raport (Arab)</span>
+            </x-roja.button>
+        </form>
     </div>
 </div>
-<div class="flex gap-3 mt-12">
-    <form action="{{ route('print-indo') }}" method="POST">
-        @csrf
-        <input type="hidden" name="nis" value="{{ $student->nis }}">
-        <input type="hidden" name="semester" value="{{ $semester }}">
-        <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download</button>
-    </form>
-    <form action="{{ route('print-arab') }}" method="POST">
-        @csrf
-        <input type="hidden" name="nis" value="{{ $student->nis }}">
-        <input type="hidden" name="semester" value="{{ $semester }}">
-        <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm" type="submit">Download Arab</button>
-    </form>
-</div>
-<h1 class="text-2xl bg-lime-600 text-white text-center p-3 rounded-md mt-12 mb-5">Berdasarkan Siswa</h1>
-<table class="w-full mt-5">
-    <thead class="bg-pink-600">
-        <th class="rounded-ss-lg py-2 text-lg text-white font-semibold">Nama</th>
-        <th class="hidden md:table-cell py-2 text-lg text-white font-semibold">KKM</th>
-        <th class="rounded-se-lg py-2 text-lg text-white font-semibold w-min">Nilai</th>
-    </thead>
-    <tbody>
-        <form action="/nilai/kelas/{{ $room->class_code }}/siswa/{{ $student->nis }}/semester/{{ $semester }}" method="POST">
-            @csrf
-        @foreach ($courses as $key=>$course)
-            <tr>
-                <td class="border border-px border-pink-600 py-2 px-4">{{ ucwords($course->name) }}</td>
-                <td class="hidden md:table-cell text-center border border-px border-pink-600">{{ $course->kkm }}</td>
-                <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2"><input class="rounded-md bg-lime-100 w-full text-center font-semibold" value="{{ $grades[$key]->grade??0 }}" type="number" name="{{ $course->id }}" max="100" id=""></td>
-            </tr>
-            @endforeach
-            <tr>
-                <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Ekstrakurikuler</td>
-            </tr>
-            @foreach (App\Models\ExtraCourse::all() as $key=>$course)
-            <tr>
-                <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}</td>
-                <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2">
-                    <select class="w-full bg-lime-100 text-center p-1 rounded-md" name="extra-{{ $course->id }}" id="">
-                        <option value="0">Nilai</option>
-                        @if ($extras->count()>0)
-                        <option {{ $extras[$key]->grade=='A'?'selected':'' }} value="A">A</option>
-                        <option {{ $extras[$key]->grade=='B'?'selected':'' }} value="B">B</option>
-                        <option {{ $extras[$key]->grade=='C'?'selected':'' }} value="C">C</option>
-                        <option {{ $extras[$key]->grade=='D'?'selected':'' }} value="D">D</option>
-                        
-                        @else
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        @endif
-                    </select>
-                </td>
-            </tr>
-            @endforeach
-            <tr>
-                <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Akhlak dan Kepribadian</td>
-            </tr>
-            @foreach (App\Models\Personality::all() as $key=>$course)
-            <tr>
-                <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}</td>
-                <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2">
-                    <select class="w-full bg-lime-100 text-center p-1 rounded-md" name="personality-{{ $course->id }}" id="">
-                        <option value="Nilai">Nilai</option>
-                        @if ($personalities->count()>0)
-                        <option {{ $personalities[$key]->grade=='Sangat Baik'?'selected':'' }} value="Sangat Baik">Sangat Baik</option>
-                        <option {{ $personalities[$key]->grade=='Baik'?'selected':'' }} value="Baik">Baik</option>
-                        <option {{ $personalities[$key]->grade=='Kurang Baik'?'selected':'' }} value="Kurang Baik">Kurang Baik</option>
-                        
-                        @else
-                        <option value="Sangat Baik">Sangat Baik</option>
-                        <option value="Baik">Baik</option>
-                        <option value="Kurang Baik">Kurang Baik</option>
-                        @endif
-                    </select>
-                </td>
-            </tr>
-            @endforeach
-            <tr>
-                <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Ketidakhadiran</td>
-            </tr>
-        @foreach (App\Models\Abcent::all() as $key=>$course)
-            <tr>
-                <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}</td>
-                <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2"><input class="rounded-md bg-lime-100 w-full text-center font-semibold" value="{{ $abcents[$key]->grade??0 }}" type="number" name="abcent-{{ $course->id }}"></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <input type="submit" value="Simpan" class="w-full rounded-md bg-pink-600 p-3 mt-16 text-white font-bold text-xl cursor-pointer hover:bg-pink-700">
-</form>
-<a href="/nilai" class="w-full rounded-md bg-red-600 p-3 mt-10 block text-center text-white font-bold text-xl cursor-pointer hover:bg-red-700">Kembali</a>
 
+<!-- Comprehensive Grade Form -->
+<form action="/nilai/kelas/{{ $room->class_code }}/siswa/{{ $student->nis }}/semester/{{ $semester }}" method="POST" class="space-y-6">
+    @csrf
+
+    <!-- 1. Nilai Akademik -->
+    <div class="roja_card overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">1. Nilai Mata Pelajaran</h4>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-50/50 border-b border-slate-100 text-slate-400 font-semibold text-[11px]">
+                        <th class="px-6 py-3">Mata Pelajaran</th>
+                        <th class="px-6 py-3 text-center hidden md:table-cell">KKM</th>
+                        <th class="px-6 py-3 text-center w-36">Nilai (0-100)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach ($courses as $key => $course)
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="px-6 py-3 font-semibold text-[#17283c]">{{ ucwords($course->name) }}</td>
+                            <td class="px-6 py-3 text-center text-slate-400 hidden md:table-cell">{{ $course->kkm }}</td>
+                            <td class="px-6 py-3 text-center">
+                                <input
+                                    type="number"
+                                    name="{{ $course->id }}"
+                                    value="{{ $grades[$key]->grade ?? 0 }}"
+                                    min="0"
+                                    max="100"
+                                    class="form-control text-center font-bold text-xs h-9 w-24 mx-auto rounded-xl"
+                                />
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. Ekstrakurikuler -->
+    <div class="roja_card overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">2. Kegiatan Ekstrakurikuler</h4>
+        </div>
+        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            @foreach (App\Models\ExtraCourse::all() as $key => $course)
+                @php
+                    $val = $extras[$key]->grade ?? 'A';
+                @endphp
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <label class="text-xs font-bold text-slate-700 block mb-2">{{ ucwords($course->name) }}</label>
+                    <select name="extra-{{ $course->id }}" class="form-control text-xs h-9 rounded-xl">
+                        @foreach (['A', 'B', 'C', 'D'] as $opt)
+                            <option value="{{ $opt }}" @selected($val === $opt)>Predikat {{ $opt }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- 3. Akhlak & Kepribadian -->
+    <div class="roja_card overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">3. Akhlak & Kepribadian</h4>
+        </div>
+        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            @foreach (App\Models\Personality::all() as $key => $course)
+                @php
+                    $val = $personalities[$key]->grade ?? 'Baik';
+                @endphp
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <label class="text-xs font-bold text-slate-700 block mb-2">{{ ucwords($course->name) }}</label>
+                    <select name="personality-{{ $course->id }}" class="form-control text-xs h-9 rounded-xl">
+                        @foreach (['Sangat Baik', 'Baik', 'Kurang Baik'] as $opt)
+                            <option value="{{ $opt }}" @selected($val === $opt)>{{ $opt }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- 4. Ketidakhadiran -->
+    <div class="roja_card overflow-hidden">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">4. Catatan Ketidakhadiran</h4>
+        </div>
+        <div class="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            @foreach (App\Models\Abcent::all() as $key => $course)
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <label class="text-xs font-bold text-slate-700 block mb-2">{{ ucwords($course->name) }}</label>
+                    <div class="flex items-center gap-2">
+                        <input
+                            type="number"
+                            name="abcent-{{ $course->id }}"
+                            value="{{ $abcents[$key]->grade ?? 0 }}"
+                            min="0"
+                            class="form-control text-center font-bold text-xs h-9 rounded-xl"
+                        />
+                        <span class="text-xs text-slate-400 font-semibold">Hari</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="flex items-center justify-between pt-2">
+        <x-roja.button href="/nilai" variant="light">
+            Kembali
+        </x-roja.button>
+        <x-roja.button type="submit" variant="primary" size="lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Simpan Raport Santri</span>
+        </x-roja.button>
+    </div>
+</form>
 @endsection

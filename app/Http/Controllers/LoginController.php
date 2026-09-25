@@ -20,12 +20,12 @@ class LoginController extends Controller
             "email"=>['required'],
             "password"=>['required']
         ]);
-        // dd(Auth::attempt($credentials));
-        if (Auth::attempt($credentials)) {
+        $remember = $req->boolean('remember');
+        if (Auth::attempt($credentials, $remember)) {
             $req->session()->regenerate(); 
             return redirect()->intended('/dashboard');
         }
-        return back()->withErrors(["error"=>'gagal']);
+        return back()->withInput($req->only('email'))->withErrors(["error"=>'Gagal masuk. Periksa email & kata sandi Anda.']);
     }
     public function logout(Request $req){
         Auth::logout();

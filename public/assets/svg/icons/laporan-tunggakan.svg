@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <g id="Group_7803" data-name="Group 7803" transform="translate(-662 -229)">
+    <circle id="Ellipse_526" data-name="Ellipse 526" cx="30" cy="30" r="30" transform="translate(662 229)" fill="#e4007e"/>
+    <g id="Group_7776" data-name="Group 7776" transform="translate(676 243)">
+      <rect id="Rectangle_3469" data-name="Rectangle 3469" width="32" height="32" fill="none"/>
+      <path id="Path_1067" data-name="Path 1067" d="M9.278,3v.66a1.979,1.979,0,0,0,1.979,1.979h6.6A1.979,1.979,0,0,0,19.834,3.66V3h2.639a2.639,2.639,0,0,1,2.639,2.639V26.751a2.639,2.639,0,0,1-2.639,2.639H6.639A2.639,2.639,0,0,1,4,26.751V5.639A2.639,2.639,0,0,1,6.639,3Z" transform="translate(1.278 0.958)" fill="#fff" fill-rule="evenodd" opacity="0.3"/>
+      <path id="Path_1068" data-name="Path 1068" d="M11.639,2.319a1.319,1.319,0,1,1,2.639,0h1.979a.66.66,0,0,1,.66.66V4.3a.66.66,0,0,1-.66.66H9.66A.66.66,0,0,1,9,4.3V2.979a.66.66,0,0,1,.66-.66Z" transform="translate(2.875 0.319)" fill="#fff" fill-rule="evenodd"/>
+      <rect id="Rectangle_3470" data-name="Rectangle 3470" width="9" height="3" rx="1" transform="translate(13 12)" fill="#fff" opacity="0.3"/>
+      <rect id="Rectangle_3471" data-name="Rectangle 3471" width="3" height="3" rx="1" transform="translate(9 12)" fill="#fff" opacity="0.3"/>
+      <rect id="Rectangle_3472" data-name="Rectangle 3472" width="3" height="3" rx="1" transform="translate(9 17)" fill="#fff" opacity="0.3"/>
+      <rect id="Rectangle_3473" data-name="Rectangle 3473" width="9" height="3" rx="1" transform="translate(13 17)" fill="#fff" opacity="0.3"/>
+      <rect id="Rectangle_3474" data-name="Rectangle 3474" width="3" height="3" rx="1" transform="translate(9 22)" fill="#fff" opacity="0.3"/>
+      <rect id="Rectangle_3475" data-name="Rectangle 3475" width="9" height="3" rx="1" transform="translate(13 22)" fill="#fff" opacity="0.3"/>
+    </g>
+  </g>
+</svg>

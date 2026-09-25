@@ -1,137 +1,174 @@
 @extends('layouts.main')
+
 @section('container')
-    <div class="p-4 bg-pink-600 rounded-lg">
-        <h1 class="text-3xl font-bold text-white">Data Nilai</h1>
-        <div class="mt-4">
-            <h1 class="text-md font-semibold text-white">Nama : {{ ucwords($student->name) }}</h1>
-            <h1 class="text-md font-semibold text-white">Rata-rata : {{ round($grades->avg('grade'), 2) }}</h1>
-            <h1 class="text-md font-semibold text-white">Semester : {{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }}</h1>
-            <h1 class="text-md font-semibold text-white">Rank : {{ $student->rank($semester) ?? '-' }}</h1>
+<div class="mb-6">
+    <x-roja.page-header
+        title="Laporan Hasil Belajar - Semester {{ $semester }}"
+        subtitle="Santri: {{ ucwords($student->name) }} (NIS: {{ $student->nis }})"
+        :breadcrumbs="[['label' => 'Nilai', 'url' => '/nilai'], ['label' => 'Semester ' . $semester]]"
+    />
+</div>
+
+<!-- Stats Card -->
+<div class="roja_card p-5 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Nama Santri</span>
+            <span class="text-xs font-bold text-[#17283c] mt-0.5 block truncate">{{ ucwords($student->name) }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Semester</span>
+            <span class="text-xs font-bold text-slate-800 mt-0.5 block">{{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Nilai Rata-rata</span>
+            <span class="text-base font-bold text-primary mt-0.5 block">{{ round($grades->avg('grade'), 2) ?? 0 }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Peringkat Kelas</span>
+            <span class="text-base font-bold text-secondary mt-0.5 block">{{ $student->rank($semester) ?? '-' }}</span>
         </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-6 w-full gap-3 mt-5">
-        @if (request('nis'))
-            @if ($semester > 12)
-                @for ($i = 13; $i <= 14; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 12 }}</a>
-                @endfor
-            @elseif($semester > 6)
-                @for ($i = 7; $i <= 12; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 6 }}</a>
-                @endfor
-            @else
-                @for ($i = 1; $i <= 6; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i }}</a>
-                @endfor
-            @endif
-        @else
-            @if ($semester > 12)
-                @for ($i = 13; $i <= 14; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 12 }}</a>
-                @endfor
-            @elseif($semester > 6)
-                @for ($i = 7; $i <= 12; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 6 }}</a>
-                @endfor
-            @else
-                @for ($i = 1; $i <= 6; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i }}</a>
-                @endfor
-            @endif
-        @endif
-    </div>
+
+    <!-- Quick Actions: PDF Downloads -->
     @if ($grades->count() > 0)
-        <div class="flex gap-3 mt-12">
-            <form action="{{ route('print-indo') }}" method="POST">
+        <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-end gap-2">
+            <form action="{{ route('print-indo') }}" method="POST" target="_blank">
                 @csrf
                 <input type="hidden" name="semester" value="{{ $semester }}">
                 @if (request('nis'))
                     <input type="hidden" name="nis" value="{{ request('nis') }}">
                 @endif
-                <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm"
-                    type="submit">Download</button>
+                <x-roja.button type="submit" variant="primary" size="sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Download Raport (Indonesia)</span>
+                </x-roja.button>
             </form>
-            <form action="{{ route('print-arab') }}" class="" method="POST">
+
+            <form action="{{ route('print-arab') }}" method="POST" target="_blank">
                 @csrf
                 <input type="hidden" name="semester" value="{{ $semester }}">
                 @if (request('nis'))
                     <input type="hidden" name="nis" value="{{ request('nis') }}">
                 @endif
-                <button class="bg-lime-600 rounded-md text-center p-2 text-white font-medium hover:bg-lime-700 text-sm"
-                    type="submit">Download Arab</button>
+                <x-roja.button type="submit" variant="secondary" size="sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Download Raport (Arab)</span>
+                </x-roja.button>
             </form>
         </div>
-
-
-        <h1 class="text-2xl bg-lime-600 text-white text-center p-3 rounded-t-md mt-3">Semester {{ $semester }}</h1>
-        <table class="w-full">
-            <thead class="bg-pink-600 text-white font-bold text-md">
-                <th class="py-2">Nama</th>
-                <th class="hidden md:table-cell py-2 text-center">KKM</th>
-                <th class="py-2 text-center">Nilai</th>
-            </thead>
-            <tbody>
-                @foreach ($grades as $grade)
-                    <tr>
-                        <td class="border border-px border-pink-600 py-2 pl-2">{{ $grade->course->name }}</td>
-                        <td class="hidden md:table-cell border border-px border-pink-600 text-center py-2 pl-2">
-                            {{ $grade->course->kkm }}</td>
-                        <td class="border border-px border-pink-600 text-center py-2 pl-2">{{ $grade->grade }}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Ekstrakurikuler
-                    </td>
-                </tr>
-                @foreach (App\Models\ExtraCourse::all() as $key => $course)
-                    <tr>
-                        <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}
-                        </td>
-                        <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2 text-center">
-                            {{ $extras[$key]->grade ?? '-' }}
-                        </td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Akhlak dan
-                        Kepribadian</td>
-                </tr>
-                @foreach (App\Models\Personality::all() as $key => $course)
-                    <tr>
-                        <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}
-                        </td>
-                        <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2">
-                            {{ $personalities[$key]->grade ?? '-' }}
-                        </td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td class="text-center py-4 bg-pink-600 text-lg text-white font-semibold" colspan="3">Ketidakhadiran
-                    </td>
-                </tr>
-                @foreach (App\Models\Abcent::all() as $key => $course)
-                    <tr>
-                        <td class="border border-px border-pink-600 py-2 px-4" colspan="2">{{ ucwords($course->name) }}
-                        </td>
-                        <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2 text-center">
-                            {{ $abcents[$key]->grade ?? '-' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <h1 class="text-center italic mt-36 text-2l">Nilai tidak tersedia</h1>
     @endif
+</div>
+
+@if ($grades->count() > 0)
+    <!-- 1. Nilai Mata Pelajaran Table -->
+    <div class="roja_card overflow-hidden mb-6">
+        <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Nilai Capaian Mata Pelajaran</h4>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-50/50 border-b border-slate-100 text-slate-400 font-semibold text-[11px]">
+                        <th class="px-6 py-3 w-12 text-center">No</th>
+                        <th class="px-6 py-3">Mata Pelajaran</th>
+                        <th class="px-6 py-3 text-center hidden md:table-cell">KKM</th>
+                        <th class="px-6 py-3 text-center">Nilai Angka</th>
+                        <th class="px-6 py-3 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach ($grades as $key => $grade)
+                        @php
+                            $isPassed = $grade->grade >= ($grade->course->kkm ?? 75);
+                        @endphp
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="px-6 py-3 text-center text-slate-400 font-semibold">{{ $key + 1 }}</td>
+                            <td class="px-6 py-3 font-semibold text-[#17283c]">
+                                {{ $grade->course->name }}
+                            </td>
+                            <td class="px-6 py-3 text-center text-slate-400 hidden md:table-cell">
+                                {{ $grade->course->kkm }}
+                            </td>
+                            <td class="px-6 py-3 text-center font-bold text-slate-800">
+                                {{ $grade->grade }}
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                <x-roja.badge variant="{{ $isPassed ? 'success' : 'danger' }}">
+                                    {{ $isPassed ? 'Tuntas' : 'Belum Tuntas' }}
+                                </x-roja.badge>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. Ekstra & Kepribadian & Absensi Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <!-- Ekstrakurikuler -->
+        <div class="roja_card overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-100">
+                <h4 class="text-xs font-bold text-slate-700 uppercase">Ekstrakurikuler</h4>
+            </div>
+            <div class="p-4 divide-y divide-slate-100">
+                @foreach (App\Models\ExtraCourse::all() as $key => $course)
+                    <div class="py-2.5 flex items-center justify-between text-xs">
+                        <span class="text-slate-600 font-medium">{{ ucwords($course->name) }}</span>
+                        <x-roja.badge variant="info">
+                            Predikat {{ $extras[$key]->grade ?? '-' }}
+                        </x-roja.badge>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Akhlak & Kepribadian -->
+        <div class="roja_card overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-100">
+                <h4 class="text-xs font-bold text-slate-700 uppercase">Akhlak & Kepribadian</h4>
+            </div>
+            <div class="p-4 divide-y divide-slate-100">
+                @foreach (App\Models\Personality::all() as $key => $course)
+                    <div class="py-2.5 flex items-center justify-between text-xs">
+                        <span class="text-slate-600 font-medium">{{ ucwords($course->name) }}</span>
+                        <x-roja.badge variant="secondary">
+                            {{ $personalities[$key]->grade ?? '-' }}
+                        </x-roja.badge>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Ketidakhadiran -->
+        <div class="roja_card overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-100">
+                <h4 class="text-xs font-bold text-slate-700 uppercase">Ketidakhadiran</h4>
+            </div>
+            <div class="p-4 divide-y divide-slate-100">
+                @foreach (App\Models\Abcent::all() as $key => $course)
+                    <div class="py-2.5 flex items-center justify-between text-xs">
+                        <span class="text-slate-600 font-medium">{{ ucwords($course->name) }}</span>
+                        <span class="font-bold text-slate-800">{{ $abcents[$key]->grade ?? 0 }} Hari</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+@else
+    <div class="roja_card p-12 text-center">
+        <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+        </div>
+        <h4 class="text-sm font-bold text-[#17283c]">Nilai Belum Tersedia</h4>
+        <p class="text-xs text-slate-400 mt-1">Nilai untuk semester ini belum diisi atau belum dipublikasikan oleh ustadz pengampu.</p>
+    </div>
+@endif
 @endsection

@@ -1,75 +1,79 @@
 @extends('layouts.main')
+
 @section('container')
-    <h1 class="text-lime-600 text-xl font-semibold">Ahlan Wa Sahlan,</h1>
-    <h1 class="text-pink-600 text-4xl font-bold">{{ ucwords($student->name) }}</h1>
-    <h1 class="text-pink-600 text-2xl font-bold">{{ $student->name_arabic }}</h1>
-    <h1 class="text-pink-600 text-lg italic mb-4">{{ $student->nis }} <svg onclick="openPopup()" class="inline" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-        <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
-      </svg> </h1>
-    <div class="p-4 bg-pink-600 rounded-lg">
-        <h1 class="text-3xl font-bold text-white">Data Kelas</h1>
-        <div class="mt-4">
-            <h1 class="text-md font-semibold text-white">Nama : {{ $room->name }}</h1>
-            <h1 class="text-md font-semibold text-white">Siswa : {{ $students->count() }} Siswa</h1>
-            {{-- {{ dd($room->teacher) }} --}}
-            <h1 class="text-md font-semibold text-white">Pengampu : {{ ucwords($room->teacher->name) }}</h1>
+<div class="mb-6">
+    <x-roja.page-header
+        title="Dashboard Santri"
+        subtitle="Selamat datang di Portal Akademik TMQ Pondok Roja"
+        :breadcrumbs="[['label' => 'Dashboard']]"
+    />
+</div>
+
+<!-- Welcome Santri Profile Card -->
+<div class="roja_card p-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xl shrink-0">
+            {{ strtoupper(substr($student->name, 0, 1)) }}
+        </div>
+        <div>
+            <span class="text-xs font-semibold text-secondary block">Ahlan Wa Sahlan,</span>
+            <h2 class="text-xl font-bold text-[#17283c]">{{ ucwords($student->name) }}</h2>
+            <div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
+                @if($student->name_arabic)
+                    <span class="font-arabic text-sm text-slate-600">{{ $student->name_arabic }}</span>
+                    <span>•</span>
+                @endif
+                <span>NIS: {{ $student->nis }}</span>
+            </div>
         </div>
     </div>
-    <div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center mt-2 rounded-t-lg">Teman Kelas</div>
-    <div class="grid grid-cols-1 md:grid-cols-4">
-        @foreach ($students as $student)
-        <div class="py-1 border border-px border-pink-600">
-            <h1 class="text-center">{{ ucwords($student->name) }}</h1>
-        </div>        
-        @endforeach
-    
+
+    <div class="flex items-center gap-2">
+        <x-roja.button href="/nilai" variant="primary" size="md">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z"></path>
+            </svg>
+            <span>Lihat Raport Saya</span>
+        </x-roja.button>
     </div>
-    @if ($errors->any())
-    <div id="popup" class="fixed bg-black top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-opacity-60">
-        <div class="rounded-md w-80 md:w-96 bg-white px-10 py-4 absolute">
-            <h1 class="text-3xl font-bold mb-4 text-center text-pink-600">Ubah Password</h1>
-            <form action="/user/edit" method="POST">
-                @csrf
-                <input type="password" name="old" placeholder="Password lama" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                @error('old')
-                <p class="italic text-xs text-red-500">{{ $message }}</p>
-                
-                @enderror
-                <input type="password" name="new" placeholder="Passord baru" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                @error('new')
-                <p class="italic text-xs text-red-500">{{ $message }}</p>
-                    
-                @enderror
-                <input type="password" name="confirm" placeholder="Konfirmasi password" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="submit" value="Ubah Sandi" class="rounded-lg bg-white border border-1 mt-4 border-pink-600 hover:bg-pink-600 w-full p-3 text-pink-600 hover:text-white font-semibold cursor-pointer">
-                <div onclick="closePopup()" class="text-center w-full p-3 text-red-600 hover:text-red-400 font-semibold cursor-pointer">Batal</div>
-            </form>
+</div>
+
+<!-- Class Information & Classmates -->
+<div class="roja_card p-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center font-bold text-sm">
+                {{ substr($room->name, 0, 2) }}
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-[#17283c]">Kelas {{ $room->name }}</h3>
+                <p class="text-xs text-slate-400 font-medium">
+                    Wali Kelas: <span class="text-slate-700 font-semibold">{{ ucwords($room->teacher->name ?? 'Belum Ditentukan') }}</span>
+                </p>
+            </div>
         </div>
-    </div>      
-    @else 
-    <div id="popup" class="hidden fixed bg-black top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-opacity-60">
-        <div class="rounded-md w-80 md:w-96 bg-white px-10 py-4 absolute">
-            <h1 class="text-3xl font-bold mb-4 text-center text-pink-600">Ubah Password</h1>
-            <form action="/user/edit" method="POST">
-                @csrf
-                <input type="password" name="old" placeholder="Password lama" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="password" name="new" placeholder="Passord baru" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="password" name="confirm" placeholder="Konfirmasi password" class="w-full mt-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="submit" value="Ubah Sandi" class="rounded-lg bg-white border border-1 mt-4 border-pink-600 hover:bg-pink-600 w-full p-3 text-pink-600 hover:text-white font-semibold cursor-pointer">
-                <div onclick="closePopup()" class="text-center w-full p-3 text-red-600 hover:text-red-400 font-semibold cursor-pointer">Batal</div>
-            </form>
+
+        <x-roja.badge variant="secondary">
+            {{ $students->count() }} Teman Sekelas
+        </x-roja.badge>
+    </div>
+
+    <!-- Classmates Grid -->
+    <div class="mt-4">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Daftar Santri Sekelas:</h4>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+            @foreach ($students as $item)
+                @php
+                    $isSelf = ($item->nis === $student->nis);
+                @endphp
+                <div class="p-3 rounded-xl {{ $isSelf ? 'bg-primary/10 border-primary/30 text-primary font-bold shadow-xs' : 'bg-slate-50 border-slate-100 text-slate-700 font-medium' }} border text-center text-xs truncate">
+                    {{ ucwords($item->name) }}
+                    @if($isSelf)
+                        <span class="text-[9px] block text-primary font-bold">(Saya)</span>
+                    @endif
+                </div>
+            @endforeach
         </div>
-    </div>    
-    @endif
-    <script>
-        function openPopup(){
-            document.getElementById('popup').classList.remove('hidden')
-        }
-        function closePopup(){
-            document.querySelector('input[name="old"]').value=""
-            document.querySelector('input[name="new"]').value=""
-            document.querySelector('input[name="confirm"]').value=""
-            document.getElementById('popup').classList.add('hidden')
-        }
-    </script>
+    </div>
+</div>
 @endsection

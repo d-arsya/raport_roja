@@ -1,61 +1,56 @@
 @extends('layouts.main')
+
 @section('container')
-    @foreach ($rooms as $room)
-        @php
-            $students = $room->students();
-        @endphp
-        <div class="p-4 bg-pink-600 rounded-lg">
-            <h1 class="text-3xl font-bold text-white">Data Kelas</h1>
-            <div class="mt-4">
-                <h1 class="text-md font-semibold text-white">Nama : {{ $room->name }}</h1>
-                <h1 class="text-md font-semibold text-white">Siswa : {{ $students->count() }} Siswa</h1>
-                <h1 class="text-md font-semibold text-white">Pengampu : {{ ucwords($room->teacher->name) }}</h1>
-            </div>
-        </div>
-        <!--<div onclick="openPopup('{{ $students[0]->group_id }}')"-->
-        <!--    class="rounded-lg bg-lime-600 hover:bg-lime-700 p-2 w-min my-2 text-white cursor-pointer">-->
-        <!--    Tambah</div>-->
-        <div class="bg-pink-600 p-2 text-white font-semibold text-xl text-center rounded-t-lg my-2">Anggota Kelas</div>
-        <div class="grid grid-cols-1 md:grid-cols-4 mb-12">
-            @for ($i = 0; $i < $students->count(); $i++)
-                <div class="py-1 border border-px border-pink-600">
-                    <h1 class="text-center">{{ ucwords($students[$i]->name) }}</h1>
-                    <h1 class="text-center">{{ $students[$i]->nis }}</h1>
+<div class="mb-6">
+    <x-roja.page-header
+        title="Daftar Anggota Kelas"
+        subtitle="Kelola santri yang berada dalam rombel pengampuan Anda"
+        :breadcrumbs="[['label' => 'Kelas']]"
+    />
+</div>
+
+@foreach ($rooms as $room)
+    @php
+        $students = $room->students();
+    @endphp
+    <div class="roja_card p-6 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center font-bold text-sm">
+                    {{ substr($room->name, 0, 2) }}
                 </div>
-            @endfor
+                <div>
+                    <h3 class="text-base font-bold text-[#17283c]">Kelas {{ $room->name }}</h3>
+                    <p class="text-xs text-slate-400">
+                        Wali Kelas: <span class="font-semibold text-slate-700">{{ ucwords($room->teacher->name ?? '-') }}</span>
+                    </p>
+                </div>
             </div>
-    @endforeach
-    <div id="popup"
-        class="hidden fixed bg-black top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-opacity-60">
-        <div class="rounded-md w-80 md:w-96 bg-white px-10 py-4 absolute">
-            <h1 class="text-3xl font-bold mb-4 text-center text-pink-600">Tambah Siswa</h1>
-            <form action="/siswa/tambah" method="POST">
-                @csrf
-                <input type="text" name="name" placeholder="Nama Siswa"
-                    class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="text" name="arabic" placeholder="Nama Arab"
-                    class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="text" name="nis" placeholder="NIS"
-                    class="w-full mb-4 border border-1 border-grey-200 p-2 rounded-lg" id="">
-                <input type="submit" value="Tambah"
-                    class="rounded-lg bg-white border border-1 border-pink-600 hover:bg-pink-600 w-full p-3 text-pink-600 hover:text-white font-semibold cursor-pointer">
-                <input type="text" class="hidden" name="grup">
-                <div onclick="closePopup()"
-                    class="text-center w-full p-3 text-red-600 hover:text-red-400 font-semibold cursor-pointer">Batal</div>
-            </form>
+
+            <x-roja.badge variant="secondary">
+                {{ $students->count() }} Santri
+            </x-roja.badge>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+            @forelse ($students as $student)
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center font-bold text-xs shrink-0">
+                        {{ strtoupper(substr($student->name, 0, 1)) }}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <h5 class="text-xs font-bold text-[#17283c] truncate">
+                            {{ ucwords($student->name) }}
+                        </h5>
+                        <span class="text-[11px] text-slate-400 font-medium">NIS: {{ $student->nis }}</span>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full py-8 text-center text-xs text-slate-400">
+                    Belum ada anggota santri dalam kelas ini.
+                </div>
+            @endforelse
         </div>
     </div>
-    <script>
-        function openPopup(groupCode) {
-            document.getElementById('popup').classList.remove('hidden')
-            document.querySelector('input[name="grup"]').value = groupCode
-        }
-
-        function closePopup() {
-            document.querySelector('input[name="name"]').value = ""
-            document.querySelector('input[name="arabic"]').value = ""
-            document.querySelector('input[name="nis"]').value = ""
-            document.getElementById('popup').classList.add('hidden')
-        }
-    </script>
+@endforeach
 @endsection

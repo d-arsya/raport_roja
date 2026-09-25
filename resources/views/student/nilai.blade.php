@@ -1,58 +1,64 @@
 @extends('layouts.main')
+
 @section('container')
-    <div class="p-4 bg-pink-600 rounded-lg">
-        <h1 class="text-3xl font-bold text-white">Data Nilai</h1>
-        <div class="mt-4">
-            <h1 class="text-md font-semibold text-white">Nama : {{ ucwords($student->name) }}</h1>
-            <h1 class="text-md font-semibold text-white">NIS : {{ $student->nis }}</h1>
+<x-roja.page-header
+    title="Raport Santri"
+    subtitle="Pilih semester untuk melihat dan mengunduh laporan hasil belajar"
+    :breadcrumbs="[['label' => 'Nilai']]"
+/>
+
+<!-- Student Profile Overview -->
+<div class="roja_card p-6 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-base">
+            {{ strtoupper(substr($student->name, 0, 1)) }}
+        </div>
+        <div>
+            <h3 class="text-base font-bold text-[#17283c]">{{ ucwords($student->name) }}</h3>
+            <p class="text-xs text-slate-400 font-medium mt-0.5">
+                NIS: <span class="text-slate-700 font-semibold">{{ $student->nis }}</span>
+            </p>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-3 mt-5">
-        @php
-            $semester = $student->room()->first()->semester;
-        @endphp
-        @if (request('nis'))
-            @if ($semester > 12)
-                @for ($i = 13; $i <= 14; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 12 }}</a>
-                @endfor
-            @elseif($semester > 6)
-                @for ($i = 7; $i <= 12; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 6 }}</a>
-                @endfor
-            @else
-                @for ($i = 1; $i <= 6; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}?nis={{ request('nis') }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i }}</a>
-                @endfor
-            @endif
-        @else
-            @if ($semester > 12)
-                @for ($i = 13; $i <= 14; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 12 }}</a>
-                @endfor
-            @elseif($semester > 6)
-                @for ($i = 7; $i <= 12; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i - 6 }}</a>
-                @endfor
-            @else
-                @for ($i = 1; $i <= 6; $i++)
-                    <a href="/nilai/siswa/semester/{{ $i }}"
-                        class="bg-pink-600 rounded-md text-center p-5 text-white font-bold hover:bg-pink-700">Semester
-                        {{ $i }}</a>
-                @endfor
-            @endif
-        @endif
 
+    <x-roja.badge variant="secondary">
+        Status: Aktif
+    </x-roja.badge>
+</div>
+
+<!-- Semester Grid Buttons -->
+@php
+    $semester = $student->room()->first()->semester ?? 1;
+    $nisParam = request('nis') ? '?nis=' . request('nis') : '';
+    
+    if ($semester > 12) {
+        $semesters = range(13, 14);
+        $offset = 12;
+    } elseif ($semester > 6) {
+        $semesters = range(7, 12);
+        $offset = 6;
+    } else {
+        $semesters = range(1, 6);
+        $offset = 0;
+    }
+@endphp
+
+<div class="roja_card p-6">
+    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">Pilih Semester:</h4>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        @foreach ($semesters as $i)
+            <a
+                href="/nilai/siswa/semester/{{ $i }}{{ $nisParam }}"
+                class="group p-5 rounded-2xl bg-slate-50 hover:bg-primary/10 border border-slate-100 hover:border-primary/20 text-center transition-all duration-200 shadow-xs hover:shadow-md"
+            >
+                <div class="w-8 h-8 rounded-xl bg-white text-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center font-bold text-xs mx-auto mb-2 transition-colors shadow-xs">
+                    {{ $i - $offset }}
+                </div>
+                <span class="text-xs font-bold text-slate-700 group-hover:text-primary transition-colors block">
+                    Semester {{ $i - $offset }}
+                </span>
+            </a>
+        @endforeach
     </div>
-
+</div>
 @endsection

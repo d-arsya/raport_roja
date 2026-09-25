@@ -1,4 +1,1 @@
-@extends('layouts.main')
-@section('container')
-    
-@endsection
+@include('admin')

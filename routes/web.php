@@ -22,15 +22,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if(Auth::user())return redirect('/dashboard');
-    return view('home',[
-        "title"=>"Home"
+    if(Auth::user()) return redirect('/dashboard');
+    return view('home', [
+        "title" => "Sistem Raport Login"
     ]);
 })->name('login');
+Route::get('/login', function () {
+    return redirect('/');
+});
 Route::get('/password', function () {
     return view('password');
 });
 Route::post('/', [LoginController::class,'login']);
+Route::post('/login', [LoginController::class,'login']);
 Route::middleware('auth')->group(function(){
     Route::post('/down-indo', [GradeController::class, 'downloadIndo'])->name('print-indo');
     Route::post('/down-arab', [GradeController::class, 'downloadArab'])->name('print-arab');

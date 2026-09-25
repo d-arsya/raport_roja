@@ -1,88 +1,137 @@
 @extends('layouts.main')
-@section('container')
-    <div class="p-4 bg-pink-600 rounded-lg mb-3">
-        <h1 class="text-3xl font-bold text-white">Data Nilai</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2">
-            <div class="mt-4">
-                <h1 class="text-md font-semibold text-white">Kelas : {{ $room->name }}</h1>
-                <h1 class="text-md font-semibold text-white">Mapel : {{ $course->name }}</h1>
-                <h1 class="text-md font-semibold text-white">Semester : {{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }}</h1>
-                <h1 class="text-md font-semibold text-white">KKM : {{ $course->kkm }}</h1>
-            </div>
-            <div class="mt-4">
-                <h1 class="text-md font-semibold text-white">Tertinggi : {{ $grades->max('grade') }}</h1>
-                <h1 class="text-md font-semibold text-white">Terendah : {{ $grades->min('grade') }}</h1>
-                <h1 class="text-md font-semibold text-white">Rata-rata : {{ round($grades->avg('grade'), 2) }}</h1>
-            </div>
 
+@section('container')
+<div class="mb-6">
+    <x-roja.page-header
+        title="Input Nilai: {{ $course->name }}"
+        subtitle="Kelas {{ $room->name }} - Semester {{ $semester % 2 == 0 ? 'Genap' : 'Ganjil' }}"
+        :breadcrumbs="[['label' => 'Nilai', 'url' => '/nilai'], ['label' => $course->name]]"
+    />
+</div>
+
+<!-- Stats Card -->
+<div class="roja_card p-5 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">KKM Pelajaran</span>
+            <span class="text-base font-bold text-[#17283c] mt-0.5 block">{{ $course->kkm }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Nilai Tertinggi</span>
+            <span class="text-base font-bold text-success mt-0.5 block">{{ $grades->max('grade') ?? 0 }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Nilai Terendah</span>
+            <span class="text-base font-bold text-danger mt-0.5 block">{{ $grades->min('grade') ?? 0 }}</span>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+            <span class="text-[11px] font-bold text-slate-400 block">Rata-rata Kelas</span>
+            <span class="text-base font-bold text-primary mt-0.5 block">{{ round($grades->avg('grade'), 2) ?? 0 }}</span>
         </div>
     </div>
-    <label for="csvFile"
-        class="w-max text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">
-        <svg class="w-5 h-5 text-gray-800 inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-            height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-        </svg>Tambah
-    </label>
-    <a
-                download="Nilai {{$course->name}} - {{ substr(uniqid(),-4) }}.csv" href="{{ Storage::url('data/nilai.csv') }}" class="w-max text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2">Template Nilai</a>
-    <input type="file" class="hidden" accept="csv" name="csvFile" id="csvFile">
-    <table class="w-full mt-5">
-        <thead class="bg-pink-600">
-            <th class="rounded-ss-lg py-2 text-lg text-white font-semibold">Nama</th>
-            <th class="hidden md:table-cell py-2 text-lg text-white font-semibold">NIS</th>
-            <th class="rounded-se-lg py-2 text-lg text-white font-semibold w-min">Nilai</th>
-        </thead>
-        <tbody>
-            <form action="/nilai/kelas/{{ $room->class_code }}/pelajaran/{{ $course->id }}/semester/{{ $semester }}"
-                method="POST">
-                @csrf
-                @foreach ($students as $key => $student)
-                    <tr>
-                        <td class="border border-px border-pink-600 py-2 px-4">{{ ucwords($student->name) }}</td>
-                        <td class="hidden md:table-cell text-center border border-px border-pink-600">{{ $student->nis }}
-                        </td>
-                        <td class="border border-px border-pink-600 py-2 w-16 md:w-48 px-2"><input
-                                class="rounded-md bg-lime-100 w-full text-center font-semibold"
-                                value="{{ $grades[$key]->grade ?? 0 }}" type="number" name="{{ $student->nis }}"
-                                max="100" id=""></td>
-                    </tr>
-                @endforeach
-        </tbody>
-    </table>
-    <input type="submit" value="Simpan"
-        class="w-full rounded-md bg-pink-600 p-3 mt-16 text-white font-bold text-xl cursor-pointer hover:bg-pink-700">
-    </form>
-    <a href="/nilai"
-        class="w-full rounded-md bg-red-600 p-3 mt-10 block text-center text-white font-bold text-xl cursor-pointer hover:bg-red-700">Kembali</a>
-    <script>
-        let csvFile = document.querySelector('#csvFile')
-        csvFile.addEventListener('change', function(e) {
-            let file = e.target.files[0]
-            const reader = new FileReader();
 
+    <!-- Actions & CSV Upload -->
+    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+            <label for="csvFile" class="roja_btn roja_btn-secondary roja_btn-sm cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                <span>Upload CSV</span>
+            </label>
+            <input type="file" class="hidden" accept=".csv" name="csvFile" id="csvFile">
+
+            <a download="Nilai {{ $course->name }}.csv" href="{{ Storage::url('data/nilai.csv') }}" class="roja_btn roja_btn-light roja_btn-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span>Template CSV</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Grade Matrix Table Form -->
+<div class="roja_card overflow-hidden">
+    <form action="/nilai/kelas/{{ $room->class_code }}/pelajaran/{{ $course->id }}/semester/{{ $semester }}" method="POST">
+        @csrf
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+                        <th class="px-6 py-4 w-12 text-center">No</th>
+                        <th class="px-6 py-4">Nama Santri</th>
+                        <th class="px-6 py-4 hidden md:table-cell text-center">NIS</th>
+                        <th class="px-6 py-4 text-center w-36">Nilai Akhir (0-100)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach ($students as $key => $student)
+                        <tr class="hover:bg-slate-50/60 transition-colors">
+                            <td class="px-6 py-3 text-center text-slate-400 font-semibold">{{ $key + 1 }}</td>
+                            <td class="px-6 py-3 font-bold text-[#17283c]">
+                                {{ ucwords($student->name) }}
+                            </td>
+                            <td class="px-6 py-3 text-center text-slate-400 hidden md:table-cell">
+                                {{ $student->nis }}
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                <input
+                                    type="number"
+                                    name="{{ $student->nis }}"
+                                    value="{{ $grades[$key]->grade ?? 0 }}"
+                                    min="0"
+                                    max="100"
+                                    class="form-control text-center font-bold text-sm h-10 w-24 mx-auto rounded-xl"
+                                />
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-5 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
+            <x-roja.button href="/nilai" variant="light">
+                Kembali
+            </x-roja.button>
+            <x-roja.button type="submit" variant="primary" size="md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>Simpan Semua Nilai</span>
+            </x-roja.button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const csvFileInput = document.querySelector('#csvFile');
+    if (csvFileInput) {
+        csvFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
             reader.onload = function(event) {
                 const csvData = event.target.result;
-                processCSV(csvData);
-            };
-
-            reader.readAsText(file);
-        })
-
-        function processCSV(csvData) {
-            const lines = csvData.split('\n');
-
-            lines.forEach(line => {
-                const [number, value] = line.split(';');
-
-                if (number && value) {
-                    const input = document.querySelector(`input[name="${number.trim()}"]`);
-                    if (input) {
-                        input.value = value.trim();
+                const lines = csvData.split('\n');
+                lines.forEach(line => {
+                    const parts = line.includes(';') ? line.split(';') : line.split(',');
+                    if (parts.length >= 2) {
+                        const [number, value] = parts;
+                        if (number && value) {
+                            const input = document.querySelector(`input[name="${number.trim()}"]`);
+                            if (input) {
+                                input.value = value.trim();
+                            }
+                        }
                     }
-                }
-            });
-            csvFile.files = new DataTransfer().files
-        }
-    </script>
+                });
+            };
+            reader.readAsText(file);
+        });
+    }
+});
+</script>
 @endsection

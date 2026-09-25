@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1366" height="291" viewBox="0 0 1366 291">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_3400" data-name="Rectangle 3400" width="1366" height="291" transform="translate(0 155)" fill="#fff"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_3402" data-name="Rectangle 3402" width="1366" height="291" transform="translate(0 148)" fill="#fff"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.525" y1="0.71" x2="-0.27" y2="0.97" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#abb4be"/>
+      <stop offset="1" stop-color="#3f4254"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.853" y1="0.564" x2="0.029" y2="1.165" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="0.807" y1="0.5" x2="-0.194" y2="0.848" xlink:href="#linear-gradient"/>
+    <filter id="Ellipse_525" x="-154" y="128" width="67" height="68" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#3f4254" flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_526" x="1455" y="150" width="76" height="77" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur-2"/>
+      <feFlood flood-color="#3f4254" flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_527" x="1139" y="-50" width="183" height="186" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur-3"/>
+      <feFlood flood-color="#abb4be" flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Mask_Group_16" data-name="Mask Group 16" transform="translate(0 -155)" clip-path="url(#clip-path)">
+    <g id="Mask_Group_17" data-name="Mask Group 17" transform="translate(0 7)" clip-path="url(#clip-path-2)">
+      <rect id="Rectangle_3401" data-name="Rectangle 3401" width="1366" height="229" transform="translate(0 148)" fill="#fff" opacity="0"/>
+      <g id="Group_7648" data-name="Group 7648" transform="translate(22945 18984)">
+        <path id="Path_1060" data-name="Path 1060" d="M479.5,0C744.321,0,959,214.232,959,478.5S744.321,957,479.5,957,0,742.768,0,478.5,214.679,0,479.5,0Z" transform="translate(-21794 -19518)" opacity="0.03" fill="url(#linear-gradient)"/>
+        <circle id="Ellipse_523" data-name="Ellipse 523" cx="362.5" cy="362.5" r="362.5" transform="translate(-23175 -19343)" fill="#3f4254" opacity="0.02"/>
+        <ellipse id="Ellipse_524" data-name="Ellipse 524" cx="212.5" cy="213" rx="212.5" ry="213" transform="translate(-23087 -19075)" fill="url(#linear-gradient-2)"/>
+        <g transform="matrix(1, 0, 0, 1, -22945, -18836)" filter="url(#Ellipse_525)">
+          <ellipse id="Ellipse_525-2" data-name="Ellipse 525" cx="21.5" cy="22" rx="21.5" ry="22" transform="translate(-142 137)" fill="url(#linear-gradient-3)"/>
+        </g>
+        <g transform="matrix(1, 0, 0, 1, -22945, -18836)" filter="url(#Ellipse_526)">
+          <ellipse id="Ellipse_526-2" data-name="Ellipse 526" cx="26" cy="26.5" rx="26" ry="26.5" transform="translate(1467 159)" opacity="0.5" fill="url(#linear-gradient-3)"/>
+        </g>
+        <g transform="matrix(1, 0, 0, 1, -22945, -18836)" filter="url(#Ellipse_527)">
+          <ellipse id="Ellipse_527-2" data-name="Ellipse 527" cx="79.5" cy="81" rx="79.5" ry="81" transform="translate(1151 -41)" fill="url(#linear-gradient-3)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

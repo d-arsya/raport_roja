@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Layer_2" data-name="Layer 2" transform="translate(24) rotate(90)">
+    <g id="bar-chart">
+      <rect id="Rectangle_1173" data-name="Rectangle 1173" width="24" height="24" transform="translate(24) rotate(90)" fill="#abb4be" opacity="0"/>
+      <path id="Path_313" data-name="Path 313" d="M12,4a1,1,0,0,0-1,1V20a1,1,0,0,0,2,0V5A1,1,0,0,0,12,4Z" fill="#abb4be"/>
+      <path id="Path_314" data-name="Path 314" d="M19,12a1,1,0,0,0-1,1v7a1,1,0,0,0,2,0V13A1,1,0,0,0,19,12Z" fill="#abb4be"/>
+      <path id="Path_315" data-name="Path 315" d="M5,8A1,1,0,0,0,4,9V20a1,1,0,0,0,2,0V9A1,1,0,0,0,5,8Z" fill="#abb4be"/>
+    </g>
+  </g>
+</svg>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Room;
+use App\Models\Course;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -13,14 +16,14 @@ class DashboardController extends Controller
         $role = auth()->user()->role;
         switch ($role) {
             case 'admin':
+            case 'super':
                 return view('admin', [
                     "active" => 'dashboard',
-                    "title" => 'Admin'
-                ]);
-            case 'super':
-                return view('super', [
-                    "active" => 'dashboard',
-                    "title" => 'Super Admin'
+                    "title" => $role === 'super' ? 'Super Admin' : 'Admin Dashboard',
+                    "studentCount" => Student::count(),
+                    "teacherCount" => Teacher::count(),
+                    "roomCount" => Room::count(),
+                    "courseCount" => Course::count(),
                 ]);
             case 'teacher':
                 $teacher = auth()->user()->teacher()->first();
