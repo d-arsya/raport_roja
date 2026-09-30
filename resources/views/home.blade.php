@@ -112,18 +112,7 @@
                                     class="form-control h-11 text-xs rounded-xl border-slate-200"
                                     required
                                 />
-                                <div class="flex justify-between items-center text-xs pt-0.5">
-                                    <div class="flex items-center space-x-2">
-                                        <input
-                                            type="checkbox"
-                                            id="login-remember"
-                                            name="remember"
-                                            class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer"
-                                        />
-                                        <label for="login-remember" class="text-slate-600 font-medium cursor-pointer text-xs select-none">
-                                            Remember Me
-                                        </label>
-                                    </div>
+                                <div class="flex justify-end items-center text-xs pt-0.5">
 
                                     <a href="/password" class="text-[11px] text-[var(--secondary)] hover:underline font-medium ml-auto">
                                         Lupa Password?
